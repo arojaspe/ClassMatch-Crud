@@ -32,7 +32,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deletePersona = exports.putPersona = exports.postPersona = exports.getPersona = exports.getPersonas = void 0;
+exports.getGobernadores = exports.deletePersona = exports.putPersona = exports.postPersona = exports.getPersona = exports.getPersonas = void 0;
 const Models = __importStar(require("./Models"));
 const Funcs = __importStar(require("./Functions"));
 //Class: Persona
@@ -44,8 +44,16 @@ exports.getPersonas = getPersonas;
 const getPersona = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const persona = yield Models.persona.findByPk(id);
-    persona ? res.json(persona) : res.status(404).json({
-        msg: "No existe persona con ID: " + id
+    persona ? res.status(201).json({
+        msg: "User found",
+        data: persona
+    }) : res.status(404).json({
+        errors: [{
+                message: "No existe persona con ID: " + id,
+                extensions: {
+                    code: "Conts.getPersona"
+                }
+            }]
     });
 });
 exports.getPersona = getPersona;
@@ -66,32 +74,63 @@ const postPersona = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.postPersona = postPersona;
 const putPersona = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const bod = req.body;
+    const { id } = req.params;
     try {
-        console.log(bod.USER_NAME, bod.USER_LASTNAME, bod.USER_FACULTY, bod.USER_CITY);
-        Funcs.updatePersona(req, bod.nombre, bod.telefono, bod.id_vivienda_actual);
-        res.status(200).send({
-            data: {
-                msg: "Succesfully updated"
-            }
-        });
+        let result = yield Funcs.updatePersona(req, bod.nombre, bod.telefono, bod.id_vivienda_actual);
+        console.log(bod);
+        if (result instanceof TypeError === false) {
+            res.status(200).send({
+                data: {
+                    msg: "Succesfully updated persona:" + id
+                }
+            });
+        }
+        else {
+            res.status(404).json({
+                errors: [{
+                        data: result,
+                        message: "Could not update persona:" + id + " it was not found",
+                        extensions: {
+                            code: "Funcs.putPersona"
+                        }
+                    }]
+            });
+        }
     }
     catch (error) {
         res.status(401).json({
             errors: [{
-                    message: "Could not connect to DB",
+                    data: error,
+                    message: "Could not update persona: " + id,
                     extensions: {
-                        code: "Controller issue"
+                        code: "Funcs.putPersona"
                     }
                 }]
         });
     }
 });
 exports.putPersona = putPersona;
-const deletePersona = (req, res) => {
+const deletePersona = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    res.json({
-        msg: "Delete Usuarios",
-        id
-    });
-};
+    const persona = yield Models.persona.findByPk(id);
+    try {
+        persona ? persona.destroy().then(() => {
+            res.json({
+                msg: "User deleted",
+                id: id
+            });
+        }) : res.status(404).json({
+            msg: "No existe persona con ID: " + id
+        });
+    }
+    catch (error) {
+        console.log(error);
+    }
+});
 exports.deletePersona = deletePersona;
+//Class: Gobernadores
+const getGobernadores = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const gobernadrores = yield Models.gobernador.findAll();
+    res.json({ gobernadrores });
+});
+exports.getGobernadores = getGobernadores;

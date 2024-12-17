@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import * as Models from "./Models";
+import { ErrorOptions } from "sequelize/types/errors/base-error";
 
 //Class: Persona
 export function createPersona(tipo_doc:string, nombre:string, fecha_nac: Date, sexo: string, telefono: number, id_vivienda_actual: number, id_municipio_origen: number) {
@@ -24,14 +25,14 @@ export async function updatePersona(req: Request, nombre?: string, telefono?:str
     try {
         const {id} = req.params;
         let persona= await Models.persona.findByPk(id)
-            persona?.set({
-                nombre: nombre? nombre: persona.getDataValue("nombre"),
-                telefono: telefono? telefono: persona.getDataValue("telefono"),
-                id_vivienda_actual: id_vivienda_actual? id_vivienda_actual: persona.getDataValue("USER_LASTNAME"),
-            })
-            persona?.save()
-    } catch (error: any) {
-        console.log(error)
-        throw new Error(error)
+        if (!persona) {throw new TypeError("Persona not found")}
+
+        persona.set({
+            nombre: nombre??  persona.getDataValue("nombre"),
+            telefono: telefono?? persona.getDataValue("telefono"),
+            id_vivienda_actual: id_vivienda_actual?? persona.getDataValue("USER_LASTNAME"),
+        }).save()
+    } catch (error) {
+        return(error)
     }
 }

@@ -176,5 +176,3 @@ export const alcalde= db.define("posesion", {
     freezeTableName: true,
     tableName: 'alcalde'
 })
-
-//Relations

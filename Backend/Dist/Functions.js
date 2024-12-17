@@ -60,16 +60,17 @@ function updatePersona(req, nombre, telefono, id_vivienda_actual) {
         try {
             const { id } = req.params;
             let persona = yield Models.persona.findByPk(id);
-            persona === null || persona === void 0 ? void 0 : persona.set({
-                nombre: nombre ? nombre : persona.getDataValue("nombre"),
-                telefono: telefono ? telefono : persona.getDataValue("telefono"),
-                id_vivienda_actual: id_vivienda_actual ? id_vivienda_actual : persona.getDataValue("USER_LASTNAME"),
-            });
-            persona === null || persona === void 0 ? void 0 : persona.save();
+            if (!persona) {
+                throw new TypeError("Persona not found");
+            }
+            persona.set({
+                nombre: nombre !== null && nombre !== void 0 ? nombre : persona.getDataValue("nombre"),
+                telefono: telefono !== null && telefono !== void 0 ? telefono : persona.getDataValue("telefono"),
+                id_vivienda_actual: id_vivienda_actual !== null && id_vivienda_actual !== void 0 ? id_vivienda_actual : persona.getDataValue("USER_LASTNAME"),
+            }).save();
         }
         catch (error) {
-            console.log(error);
-            throw new Error(error);
+            return (error);
         }
     });
 }

@@ -181,4 +181,3 @@ exports.alcalde = Connection_1.default.define("posesion", {
     freezeTableName: true,
     tableName: 'alcalde'
 });
-//Relations
