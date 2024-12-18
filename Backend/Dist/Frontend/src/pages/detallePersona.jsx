@@ -30,8 +30,8 @@ const DetallePersonaPage = () => {
     }, [id]);
     if (!persona)
         return <div className="text-center text-lg mt-10">Cargando...</div>;
-    return (<div className="flex flex-col items-center justify-center min-h-screen bg-slate-400 w-40">
-      <div className="bg-white shadow-lg rounded-lg p-6 w-auto w-full">
+    return (<div className="flex flex-col items-center justify-center min-h-screen">
+      <div className="bg-indigo-100 shadow-lg rounded-lg p-6 w-auto w-full">
         <h1 className="text-2xl font-bold text-gray-800 mb-4 text-center">
           Detalle de Persona
         </h1>

@@ -6,26 +6,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const react_router_dom_1 = require("react-router-dom");
 const personas_1 = __importDefault(require("./pages/personas"));
 const detallePersona_1 = __importDefault(require("./pages/detallePersona"));
+const viviendas_1 = __importDefault(require("./pages/viviendas"));
+const Header_1 = __importDefault(require("./components/Header"));
 function App() {
-    return (<>
-      <div className="bg-white">
-        <react_router_dom_1.BrowserRouter>
-          <header className="bg-blue-600 text-white py-4 shadow-md">
-            <h1 className="text-center text-2xl font-bold">
-              Gestión de Personas
-            </h1>
-          </header>
-          <main className="flex-grow px-4 py-6">
-            <react_router_dom_1.Routes>
-              <react_router_dom_1.Route path="/personas" element={<personas_1.default />}/>
-              <react_router_dom_1.Route path="/persona/:id" element={<detallePersona_1.default />}/>
-            </react_router_dom_1.Routes>
-          </main>
-          <footer className="bg-gray-800 text-white py-4 text-center">
-            <p>&copy; {new Date().getFullYear()} Mi Aplicación</p>
-          </footer>
-        </react_router_dom_1.BrowserRouter>
+    return (<react_router_dom_1.BrowserRouter>
+      <div className="bg-white min-h-screen">
+        {/* Header agregado al inicio */}
+        <Header_1.default />
+
+        {/* Contenido Principal */}
+        <main className="px-4 py-6">
+          <react_router_dom_1.Routes>
+            <react_router_dom_1.Route path="/personas" element={<personas_1.default />}/>
+            <react_router_dom_1.Route path="/persona/:id" element={<detallePersona_1.default />}/>
+            <react_router_dom_1.Route path="/viviendas" element={<viviendas_1.default />}/>
+          </react_router_dom_1.Routes>
+        </main>
+
+        {/* Footer */}
+        <footer className="bg-gray-800 text-white py-4 text-center">
+          <p>ClassMatch CRUD</p>
+        </footer>
       </div>
-    </>);
+    </react_router_dom_1.BrowserRouter>);
 }
 exports.default = App;

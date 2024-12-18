@@ -1,84 +1,217 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Persona } from "../types";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useParams, useNavigate } from "react-router-dom";
 
-const DetallePersonaPage = () => {
-  const { id } = useParams();
-  const [persona, setPersona] = useState<Persona>();
+const DetallePersona: React.FC = () => {
+  const { id } = useParams<{ id: string }>(); // Obtener el ID de la persona
+  const navigate = useNavigate(); // Para redirigir después de guardar/cancelar
+  const [persona, setPersona] = useState<any>(null); // Datos de la persona
+  const [isEditing, setIsEditing] = useState(false); // Para determinar si estamos en modo edición
+  const [formData, setFormData] = useState<any>({
+    nombre: "",
+    tipo_doc: "",
+    numero_doc: "",
+    sexo: "",
+    fecha_nac: "",
+    telefono: "",
+    id_vivienda_actual: "",
+    id_municipio_origen: "",
+  });
+  const [error, setError] = useState<string | null>(null);
 
+  // Cargar los datos de la persona
   useEffect(() => {
-    const fetchPersona = async () => {
-      try {
-        const response = await fetch(`http://localhost:5000/api/persona/${id}`);
-        const data = await response.json();
-        setPersona(data.data); // Asegurarse de acceder al campo "data"
-        console.log(data.data); // Verifica los datos en la consola
-      } catch (error) {
+    axios
+      .get(`http://localhost:5000/api/personas/${id}`)
+      .then((response) => {
+        setPersona(response.data.persona);
+        setFormData(response.data.persona); // Inicializamos el formulario con los datos de la persona
+      })
+      .catch((error) => {
         console.error("Error fetching persona:", error);
-      }
-    };
-
-    fetchPersona();
+      });
   }, [id]);
 
-  if (!persona)
-    return <div className="text-center text-lg mt-10">Cargando...</div>;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSave = () => {
+    // Validación antes de guardar
+    if (!formData.nombre || !formData.tipo_doc || !formData.numero_doc || !formData.sexo || !formData.fecha_nac || !formData.telefono || !formData.id_vivienda_actual || !formData.id_municipio_origen) {
+      setError("Por favor, complete todos los campos.");
+      return;
+    }
+
+    // Enviar los cambios al backend
+    axios
+      .put(`http://localhost:5000/api/personas/${id}`, formData)
+      .then((response) => {
+        setPersona(response.data.persona);
+        setIsEditing(false); // Cambiar a modo de solo lectura
+        setError(null); // Limpiar errores
+      })
+      .catch((error) => {
+        console.error("Error saving persona:", error);
+      });
+  };
+
+  const handleCancel = () => {
+    setFormData(persona); // Restauramos los datos originales
+    setIsEditing(false); // Salimos del modo edición
+    setError(null); // Limpiar errores
+  };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <div className="bg-indigo-100 shadow-lg rounded-lg p-6 w-auto w-full">
-        <h1 className="text-2xl font-bold text-gray-800 mb-4 text-center">
-          Detalle de Persona
-        </h1>
-        <div className="space-y-4">
-          <div>
-            <span className="font-semibold text-gray-600">Nombre:</span>{" "}
-            <span className="text-gray-800">{persona.nombre}</span>
-          </div>
-          <div>
-            <span className="font-semibold text-gray-600">
-              Tipo de Documento:
-            </span>{" "}
-            <span className="text-gray-800">{persona.tipo_doc}</span>
-          </div>
-          <div>
-            <span className="font-semibold text-gray-600">
-              Fecha de Nacimiento:
-            </span>{" "}
-            <span className="text-gray-800">{persona.fecha_nac}</span>
-          </div>
-          <div>
-            <span className="font-semibold text-gray-600">Sexo:</span>{" "}
-            <span className="text-gray-800">{persona.sexo}</span>
-          </div>
-          <div>
-            <span className="font-semibold text-gray-600">Teléfono:</span>{" "}
-            <span className="text-gray-800">
-              {persona.telefono || "No disponible"}
-            </span>
-          </div>
-          <div>
-            <span className="font-semibold text-gray-600">
-              ID de Vivienda Actual:
-            </span>{" "}
-            <span className="text-gray-800">{persona.id_vivienda_actual}</span>
-          </div>
-          <div>
-            <span className="font-semibold text-gray-600">
-              ID de Municipio de Origen:
-            </span>{" "}
-            <span className="text-gray-800">{persona.id_municipio_origen}</span>
-          </div>
-        </div>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+      <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-5xl">
+        <h1 className="text-3xl font-semibold text-center mb-6">Detalle de Persona</h1>
+
+        {error && <div className="text-red-500 text-center mb-4">{error}</div>}
+
+        {/* Botón de Volver */}
         <button
-          className="mt-6 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg w-full"
-          onClick={() => window.history.back()}
+          onClick={() => navigate(-1)}
+          className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-md mb-4"
         >
           Volver
         </button>
+
+        <form className="space-y-4">
+          {/* Mostrar los datos de la persona en campos de solo lectura */}
+          <div>
+            <label className="block text-gray-700">Nombre:</label>
+            <input
+              type="text"
+              name="nombre"
+              value={formData.nombre}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded-md"
+              disabled={!isEditing} // Deshabilitamos si no estamos en modo edición
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-700">Tipo de Documento:</label>
+            <input
+              type="text"
+              name="tipo_doc"
+              value={formData.tipo_doc}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded-md"
+              disabled={!isEditing}
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-700">Número de Documento:</label>
+            <input
+              type="text"
+              name="numero_doc"
+              value={formData.numero_doc}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded-md"
+              disabled={!isEditing}
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-700">Sexo:</label>
+            <input
+              type="text"
+              name="sexo"
+              value={formData.sexo}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded-md"
+              disabled={!isEditing}
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-700">Fecha de Nacimiento:</label>
+            <input
+              type="date"
+              name="fecha_nac"
+              value={formData.fecha_nac}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded-md"
+              disabled={!isEditing}
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-700">Teléfono:</label>
+            <input
+              type="text"
+              name="telefono"
+              value={formData.telefono}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded-md"
+              disabled={!isEditing}
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-700">ID de Vivienda Actual:</label>
+            <input
+              type="text"
+              name="id_vivienda_actual"
+              value={formData.id_vivienda_actual}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded-md"
+              disabled={!isEditing}
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-700">ID de Municipio de Origen:</label>
+            <input
+              type="text"
+              name="id_municipio_origen"
+              value={formData.id_municipio_origen}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded-md"
+              disabled={!isEditing}
+            />
+          </div>
+
+          {/* Mostrar los botones dependiendo del estado de edición */}
+          <div className="mt-4">
+            {!isEditing ? (
+              <button
+                type="button"
+                onClick={() => setIsEditing(true)} // Cambiar a modo edición
+                className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-md"
+              >
+                Editar
+              </button>
+            ) : (
+              <div>
+                <button
+                  type="button"
+                  onClick={handleSave}
+                  className="bg-green-500 hover:bg-green-600 text-white py-2 px-6 rounded-md mr-4"
+                >
+                  Guardar
+                </button>
+                <button
+                  type="button"
+                  onClick={handleCancel}
+                  className="bg-red-500 hover:bg-red-600 text-white py-2 px-6 rounded-md"
+                >
+                  Cancelar
+                </button>
+              </div>
+            )}
+          </div>
+        </form>
       </div>
     </div>
   );
 };
 
-export default DetallePersonaPage;
+export default DetallePersona;

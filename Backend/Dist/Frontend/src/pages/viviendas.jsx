@@ -38,13 +38,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
 const axios_1 = __importDefault(require("axios"));
-const PersonasPage = () => {
-    const [personas, setPersonas] = (0, react_1.useState)([]);
+const ViviendasPage = () => {
+    const [viviendas, setPersonas] = (0, react_1.useState)([]);
     (0, react_1.useEffect)(() => {
         axios_1.default
-            .get("http://localhost:5000/api/personas")
+            .get("http://localhost:5000/api/viviendas")
             .then((response) => {
-            setPersonas(response.data.personas);
+            setPersonas(response.data.viviendas);
             console.log(response.data);
         })
             .catch((error) => {
@@ -52,12 +52,12 @@ const PersonasPage = () => {
         });
     }, []);
     return (<div className="w-full">
-      <h1 className="text-5xl">Personas</h1>
+      <h1 className="text-5xl">Viviendas</h1>
       <ul className="text-black">
-        {personas.map((persona) => (<li key={persona.id}>
-            {persona.nombre}, {persona.sexo}
+        {viviendas.map((vivienda) => (<li key={vivienda.id}>
+            {vivienda.direccion}, {vivienda.categoria}
           </li>))}
       </ul>
     </div>);
 };
-exports.default = PersonasPage;
+exports.default = ViviendasPage;
