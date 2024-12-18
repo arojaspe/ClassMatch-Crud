@@ -3,6 +3,8 @@ import PersonasPage from "./pages/personas";
 import DetallePersonaPage from "./pages/detallePersona";
 import ViviendasPage from "./pages/viviendas";
 import Header from "./components/Header";
+import DetalleViviendaPage from "./pages/detalleVivienda";
+import GobernadoresPage from "./pages/gobernadores";
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
             <Route path="/personas" element={<PersonasPage />} />
             <Route path="/persona/:id" element={<DetallePersonaPage />} />
             <Route path="/viviendas" element={<ViviendasPage />} />
+            <Route path="/vivienda/:id" element={<DetalleViviendaPage />} />
+            <Route path="/gobernadores" element={<GobernadoresPage />} />
           </Routes>
         </main>
 
