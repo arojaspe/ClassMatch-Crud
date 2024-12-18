@@ -101,6 +101,64 @@ export const deletePersona = async (req: Request, res: Response) => {
 //Class: Gobernadores
 export const getGobernadores = async (req: Request, res: Response) => {
     
-    const gobernadrores= await Models.gobernador.findAll();
-    res.json({gobernadrores});
+    const gobernadores= await Models.gobernador.findAll();
+    res.json({gobernadores});
+}
+
+//Class: Viviendas
+export const getViviendas = async (req: Request, res: Response) => {
+    
+    const viviendas = await Models.vivienda.findAll();
+    res.json({viviendas});
+}
+export const getVivienda = async (req: Request, res: Response) => {
+    
+    const {id} = req.params;
+
+    const vivienda = await Models.vivienda.findByPk(id);
+
+    vivienda ? res.status(201).json(
+        {
+            msg: "Apartment found",
+            data: vivienda
+        }
+    ) : res.status(404).json({
+        errors: [{
+            message: "No existe vivienda con ID: " +id,
+            extensions: {
+                code: "Conts.getVivienda"
+            }
+        }]
+    })
+}
+export const postVivienda = async (req: Request, res: Response) => {
+    
+    const {body}= req;
+    try {
+        const vivienda = Models.vivienda.build(body);
+        await vivienda.save();
+        res.json(vivienda);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: "Error al crear Vivienda",
+        })
+    }
+}
+export const deleteVivienda = async (req: Request, res: Response) => {
+    
+    const {id}= req.params;
+    const vivienda = await Models.vivienda.findByPk(id);
+    try {
+        vivienda ? vivienda.destroy().then(() => {
+            res.json({
+                msg: "Apartment deleted",
+                id: id
+            })
+        })  : res.status(404).json({
+            msg: "No existe vivienda con ID: "+ id
+        })
+    } catch (error) {
+        console.log(error)
+    }
 }
