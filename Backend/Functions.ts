@@ -36,3 +36,5 @@ export async function updatePersona(req: Request, nombre?: string, telefono?:str
         return(error)
     }
 }
+
+//Class: Vivienda
