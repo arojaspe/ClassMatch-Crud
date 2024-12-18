@@ -7,7 +7,16 @@ export const getPersonas = async (req: Request, res: Response) => {
     
     const personas= await Models.persona.findAll({
         include: [
-            {model: Models.vivienda},
+            {
+                model: Models.vivienda,
+                include : [
+                    {model: Models.municipio,
+                        include: [ 
+                            {model: Models.departamento}
+                        ]
+                    },
+                ]
+            },
             {
                 model: Models.municipio,
                 include : [
@@ -24,7 +33,16 @@ export const getPersona = async (req: Request, res: Response) => {
 
     const persona= await Models.persona.findByPk(id, {
         include: [
-            {model: Models.vivienda},
+            {
+                model: Models.vivienda,
+                include : [
+                    {model: Models.municipio,
+                        include: [ 
+                            {model: Models.departamento}
+                        ]
+                    },
+                ]
+            },
             {
                 model: Models.municipio,
                 include : [
@@ -121,14 +139,64 @@ export const deletePersona = async (req: Request, res: Response) => {
 //Class: Gobernadores
 export const getGobernadores = async (req: Request, res: Response) => {
     
-    const gobernadores= await Models.gobernador.findAll();
+    const gobernadores= await Models.gobernador.findAll({
+        include: [
+            {model: Models.departamento},
+            {
+                model: Models.persona,
+                include: [
+                        {
+                            model: Models.vivienda,
+                            include : [
+                                {model: Models.municipio,
+                                    include: [ 
+                                        {model: Models.departamento}
+                                    ]
+                                },
+                            ]
+                        },
+                        {
+                            model: Models.municipio,
+                            include : [
+                                {model: Models.departamento}
+                            ],
+                        },
+                ]
+            },
+        ],
+    });
     res.json({gobernadores});
 }
 export const getGobernador = async (req: Request, res: Response) => {
     
     const {id} = req.params;
 
-    const gobernador = await Models.gobernador.findByPk(id);
+    const gobernador = await Models.gobernador.findByPk(id, {
+        include: [
+            {model: Models.departamento},
+            {
+                model: Models.persona,
+                include: [
+                        {
+                            model: Models.vivienda,
+                            include : [
+                                {model: Models.municipio,
+                                    include: [ 
+                                        {model: Models.departamento}
+                                    ]
+                                },
+                            ]
+                        },
+                        {
+                            model: Models.municipio,
+                            include : [
+                                {model: Models.departamento}
+                            ],
+                        },
+                ]
+            },
+        ],
+    });
 
     gobernador ? res.status(201).json(
         {
@@ -144,6 +212,23 @@ export const getGobernador = async (req: Request, res: Response) => {
         }]
     })
 }
+export const postGobernador = async (req: Request, res: Response) => {
+    
+    const {body}= req;
+    try {
+        const gobernador = Models.gobernador.build(body);
+        await gobernador.save();
+        res.json(gobernador);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: "Error al crear Gobernador",
+        })
+    }
+}
+
+//Class: Alcaldes
+
 
 //Class: Viviendas
 export const getViviendas = async (req: Request, res: Response) => {

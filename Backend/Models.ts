@@ -183,14 +183,21 @@ vivienda.belongsTo(municipio, {foreignKey: 'id_municipio'});
 
 persona.belongsTo(vivienda, {foreignKey: 'id_vivienda_actual'});
 persona.belongsTo(municipio, {foreignKey: 'id_municipio_origen'});
+persona.hasOne(gobernador, {foreignKey: 'id_persona'});
+persona.hasOne(alcalde, {foreignKey: 'id_persona'});
+
+gobernador.belongsTo(persona, {foreignKey: 'id_persona'});
+gobernador.belongsTo(departamento, {foreignKey: 'id_departamento'});
+
+alcalde.belongsTo(persona, {foreignKey: 'id_persona'});
+alcalde.belongsTo(municipio, {foreignKey: 'id_municipio'});
 
 municipio.hasMany(persona, {foreignKey: 'id_municipio_origen'});
 municipio.hasMany(vivienda, {foreignKey: 'id_municipio'});
+municipio.hasOne(alcalde, {foreignKey: 'id_municipio'});
 municipio.belongsTo(departamento, {foreignKey: 'id_departamento'});
 
 departamento.hasMany(municipio, {foreignKey: 'id_departamento'});
-
-//gobernador.hasOne(persona);
-//persona.belongsTo(gobernador);
+departamento.hasOne(gobernador, {foreignKey: 'id_departamento'});
 
 
