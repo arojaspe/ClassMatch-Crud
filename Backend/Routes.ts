@@ -14,14 +14,20 @@ router.delete("/persona/:id", Conts.deletePersona);
 router.get("/viviendas", Conts.getViviendas); 
 router.get("/vivienda/:id", Conts.getVivienda);
 router.post("/vivienda", Conts.postVivienda);
-
 // No se pueden modificar los datos de las viviendas
 // se elimina, se crea una nueva y se relaciona
-//router.put("/vivienda/:id", Conts.putVivienda);
-//
 router.delete("/vivienda/:id", Conts.deleteVivienda);
 
-//User Management
+//Governors Management
 router.get("/gobernadores", Conts.getGobernadores);
+router.get("/gobernador/:id", Conts.getGobernador);
+// No se pueden borrar o editar
+router.post("/gobernador/", Conts.postGobernador);
+
+//Majors Managment
+router.get("/alcaldes", Conts.getAlcaldes);
+router.get("/alcalde/:id", Conts.getAlcalde);
+// No se pueden borrar o editar
+router.post("/alcalde/", Conts.postAlcalde);
 
 export default router;
