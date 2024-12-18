@@ -5,14 +5,52 @@ import * as Funcs from "./Functions"
 //Class: Persona
 export const getPersonas = async (req: Request, res: Response) => {
     
-    const personas= await Models.persona.findAll();
+    const personas= await Models.persona.findAll({
+        include: [
+            {
+                model: Models.vivienda,
+                include : [
+                    {model: Models.municipio,
+                        include: [ 
+                            {model: Models.departamento}
+                        ]
+                    },
+                ]
+            },
+            {
+                model: Models.municipio,
+                include : [
+                    {model: Models.departamento}
+                ]
+            },
+        ],
+    });
     res.json({personas});
 }
 export const getPersona = async (req: Request, res: Response) => {
     
     const {id} = req.params;
 
-    const persona= await Models.persona.findByPk(id);
+    const persona= await Models.persona.findByPk(id, {
+        include: [
+            {
+                model: Models.vivienda,
+                include : [
+                    {model: Models.municipio,
+                        include: [ 
+                            {model: Models.departamento}
+                        ]
+                    },
+                ]
+            },
+            {
+                model: Models.municipio,
+                include : [
+                    {model: Models.departamento}
+                ]
+            },
+        ],
+    });
 
     persona ? res.status(201).json(
         {
@@ -101,21 +139,224 @@ export const deletePersona = async (req: Request, res: Response) => {
 //Class: Gobernadores
 export const getGobernadores = async (req: Request, res: Response) => {
     
-    const gobernadores= await Models.gobernador.findAll();
+    const gobernadores= await Models.gobernador.findAll({
+        include: [
+            {model: Models.departamento},
+            {
+                model: Models.persona,
+                include: [
+                        {
+                            model: Models.vivienda,
+                            include : [
+                                {model: Models.municipio,
+                                    include: [ 
+                                        {model: Models.departamento}
+                                    ]
+                                },
+                            ]
+                        },
+                        {
+                            model: Models.municipio,
+                            include : [
+                                {model: Models.departamento}
+                            ],
+                        },
+                ]
+            },
+        ],
+    });
     res.json({gobernadores});
+}
+export const getGobernador = async (req: Request, res: Response) => {
+    
+    const {id} = req.params;
+
+    const gobernador = await Models.gobernador.findByPk(id, {
+        include: [
+            {model: Models.departamento},
+            {
+                model: Models.persona,
+                include: [
+                        {
+                            model: Models.vivienda,
+                            include : [
+                                {model: Models.municipio,
+                                    include: [ 
+                                        {model: Models.departamento}
+                                    ]
+                                },
+                            ]
+                        },
+                        {
+                            model: Models.municipio,
+                            include : [
+                                {model: Models.departamento}
+                            ],
+                        },
+                ]
+            },
+        ],
+    });
+
+    gobernador ? res.status(201).json(
+        {
+            msg: "Governor found",
+            data: gobernador
+        }
+    ) : res.status(404).json({
+        errors: [{
+            message: "No existe gobernador con ID: " +id,
+            extensions: {
+                code: "Conts.getGobernador"
+            }
+        }]
+    })
+}
+export const postGobernador = async (req: Request, res: Response) => {
+    
+    const {body}= req;
+    try {
+        const gobernador = Models.gobernador.build(body);
+        await gobernador.save();
+        res.json(gobernador);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: "Error al crear Gobernador",
+        })
+    }
+}
+
+//Class: Alcaldes
+export const getAlcaldes = async (req: Request, res: Response) => {
+    
+    const alcaldes = await Models.alcalde.findAll({
+        include: [
+            {
+                model: Models.municipio,
+                include : [
+                    {model: Models.departamento}
+                ],
+            },
+            {
+                model: Models.persona,
+                include: [
+                        {
+                            model: Models.vivienda,
+                            include : [
+                                {model: Models.municipio,
+                                    include: [ 
+                                        {model: Models.departamento}
+                                    ]
+                                },
+                            ]
+                        },
+                        {
+                            model: Models.municipio,
+                            include : [
+                                {model: Models.departamento}
+                            ],
+                        },
+                ]
+            },
+        ],
+    });
+    res.json({alcaldes});
+}
+export const getAlcalde = async (req: Request, res: Response) => {
+    
+    const {id} = req.params;
+
+    const alcalde = await Models.alcalde.findByPk(id, {
+        include: [
+            {
+                model: Models.municipio,
+                include : [
+                    {model: Models.departamento}
+                ],
+            },
+            {
+                model: Models.persona,
+                include: [
+                        {
+                            model: Models.vivienda,
+                            include : [
+                                {model: Models.municipio,
+                                    include: [ 
+                                        {model: Models.departamento}
+                                    ]
+                                },
+                            ]
+                        },
+                        {
+                            model: Models.municipio,
+                            include : [
+                                {model: Models.departamento}
+                            ],
+                        },
+                ]
+            },
+        ],
+    });
+
+    alcalde ? res.status(201).json(
+        {
+            msg: "Major found",
+            data: alcalde
+        }
+    ) : res.status(404).json({
+        errors: [{
+            message: "No existe alcalde con ID: " +id,
+            extensions: {
+                code: "Conts.getAlcalde"
+            }
+        }]
+    })
+}
+export const postAlcalde = async (req: Request, res: Response) => {
+    
+    const {body}= req;
+    try {
+        const alcalde = Models.alcalde.build(body);
+        await alcalde.save();
+        res.json(alcalde);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: "Error al crear Alcalde",
+        })
+    }
 }
 
 //Class: Viviendas
 export const getViviendas = async (req: Request, res: Response) => {
     
-    const viviendas = await Models.vivienda.findAll();
+    const viviendas = await Models.vivienda.findAll({
+        include: [
+            {
+                model: Models.municipio,
+                include : [
+                    {model: Models.departamento}
+                ]
+            },
+        ],
+    });
     res.json({viviendas});
 }
 export const getVivienda = async (req: Request, res: Response) => {
     
     const {id} = req.params;
 
-    const vivienda = await Models.vivienda.findByPk(id);
+    const vivienda = await Models.vivienda.findByPk(id,{
+        include: [
+            {
+                model: Models.municipio,
+                include : [
+                    {model: Models.departamento}
+                ]
+            },
+        ],
+    });
 
     vivienda ? res.status(201).json(
         {
