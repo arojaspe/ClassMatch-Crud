@@ -176,3 +176,21 @@ export const alcalde= db.define("posesion", {
     freezeTableName: true,
     tableName: 'alcalde'
 })
+
+// Relations
+vivienda.hasMany(persona, {foreignKey: 'id_vivienda_actual'});
+vivienda.belongsTo(municipio, {foreignKey: 'id_municipio'});
+
+persona.belongsTo(vivienda, {foreignKey: 'id_vivienda_actual'});
+persona.belongsTo(municipio, {foreignKey: 'id_municipio_origen'});
+
+municipio.hasMany(persona, {foreignKey: 'id_municipio_origen'});
+municipio.hasMany(vivienda, {foreignKey: 'id_municipio'});
+municipio.belongsTo(departamento, {foreignKey: 'id_departamento'});
+
+departamento.hasMany(municipio, {foreignKey: 'id_departamento'});
+
+//gobernador.hasOne(persona);
+//persona.belongsTo(gobernador);
+
+

@@ -5,14 +5,34 @@ import * as Funcs from "./Functions"
 //Class: Persona
 export const getPersonas = async (req: Request, res: Response) => {
     
-    const personas= await Models.persona.findAll();
+    const personas= await Models.persona.findAll({
+        include: [
+            {model: Models.vivienda},
+            {
+                model: Models.municipio,
+                include : [
+                    {model: Models.departamento}
+                ]
+            },
+        ],
+    });
     res.json({personas});
 }
 export const getPersona = async (req: Request, res: Response) => {
     
     const {id} = req.params;
 
-    const persona= await Models.persona.findByPk(id);
+    const persona= await Models.persona.findByPk(id, {
+        include: [
+            {model: Models.vivienda},
+            {
+                model: Models.municipio,
+                include : [
+                    {model: Models.departamento}
+                ]
+            },
+        ],
+    });
 
     persona ? res.status(201).json(
         {
@@ -104,18 +124,56 @@ export const getGobernadores = async (req: Request, res: Response) => {
     const gobernadores= await Models.gobernador.findAll();
     res.json({gobernadores});
 }
+export const getGobernador = async (req: Request, res: Response) => {
+    
+    const {id} = req.params;
+
+    const gobernador = await Models.gobernador.findByPk(id);
+
+    gobernador ? res.status(201).json(
+        {
+            msg: "Governor found",
+            data: gobernador
+        }
+    ) : res.status(404).json({
+        errors: [{
+            message: "No existe gobernador con ID: " +id,
+            extensions: {
+                code: "Conts.getGobernador"
+            }
+        }]
+    })
+}
 
 //Class: Viviendas
 export const getViviendas = async (req: Request, res: Response) => {
     
-    const viviendas = await Models.vivienda.findAll();
+    const viviendas = await Models.vivienda.findAll({
+        include: [
+            {
+                model: Models.municipio,
+                include : [
+                    {model: Models.departamento}
+                ]
+            },
+        ],
+    });
     res.json({viviendas});
 }
 export const getVivienda = async (req: Request, res: Response) => {
     
     const {id} = req.params;
 
-    const vivienda = await Models.vivienda.findByPk(id);
+    const vivienda = await Models.vivienda.findByPk(id,{
+        include: [
+            {
+                model: Models.municipio,
+                include : [
+                    {model: Models.departamento}
+                ]
+            },
+        ],
+    });
 
     vivienda ? res.status(201).json(
         {

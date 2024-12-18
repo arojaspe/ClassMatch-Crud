@@ -23,5 +23,7 @@ router.delete("/vivienda/:id", Conts.deleteVivienda);
 
 //User Management
 router.get("/gobernadores", Conts.getGobernadores);
+router.get("/gobernador/:id", Conts.getGobernador);
+// No se p
 
 export default router;
