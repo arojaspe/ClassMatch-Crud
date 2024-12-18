@@ -1,21 +1,38 @@
-import dotenv from "dotenv";
-import Server from "./Server";
-import Cors from "cors";
 import express from "express";
-
-dotenv.config();
-
+//import { Request, Response } from "express";
+import cors from "cors";
 const app = express();
 
-const corsOptions = {
-  origin: "http://localhost:",
-};
+app.use(cors({ origin: "http://localhost:5173" }));
+app.use(express.json());
 
-app.use(Cors(corsOptions));
+// app.get("/api/personas", async (req, res) => {
+//   try {
+//     const personas = await persona.findAll();
+//     res.json(personas);
+//   } catch (error) {
+//     console.error("Error al obtener personas:", error);
+//     res.status(500).json({ message: "Error al obtener personas" });
+//   }
+// });
 
-app.get("/", (req, res) => {
-  res.json({ message: "Hello World" });
+// app.get(
+//   "/api/personas/:id",
+//   async (req: Request<{ id: string }>, res: Response) => {
+//     const { id } = req.params; // Obtén el ID de los parámetros de la URL
+//     try {
+//       const person = await persona.findByPk(id); // Busca la persona por su ID
+//       if (!person) {
+//         return res.status(404).json({ message: "Persona no encontrada" });
+//       }
+//       res.json(persona); // Envía los datos de la persona como JSON
+//     } catch (error) {
+//       console.error("Error al obtener la persona:", error);
+//       res.status(500).json({ message: "Error al obtener la persona" });
+//     }
+//   }
+// );
+
+app.listen(5000, () => {
+  console.log("Servidor backend corriendo en el puerto 5000");
 });
-
-const serv = new Server();
-serv.listen();
