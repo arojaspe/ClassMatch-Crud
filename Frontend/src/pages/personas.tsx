@@ -9,7 +9,8 @@ const PersonasPage: React.FC = () => {
     axios
       .get("http://localhost:5000/api/personas")
       .then((response) => {
-        setPersonas(response.data);
+        setPersonas(response.data.personas);
+        console.log(response.data);
       })
       .catch((error) => {
         console.error("Error fetching products:", error);
@@ -17,9 +18,9 @@ const PersonasPage: React.FC = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Personas</h1>
-      <ul className="text-white">
+    <div className="w-full">
+      <h1 className="text-5xl">Personas</h1>
+      <ul className="text-black">
         {personas.map((persona) => (
           <li key={persona.id}>
             {persona.nombre}, {persona.sexo}

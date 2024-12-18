@@ -84,3 +84,4 @@ function updatePersona(req, nombre, telefono, id_vivienda_actual) {
         }
     });
 }
+//Class: Vivienda

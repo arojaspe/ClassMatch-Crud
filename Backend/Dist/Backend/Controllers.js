@@ -42,7 +42,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getGobernadores = exports.deletePersona = exports.putPersona = exports.postPersona = exports.getPersona = exports.getPersonas = void 0;
+exports.deleteVivienda = exports.postVivienda = exports.getVivienda = exports.getViviendas = exports.getGobernadores = exports.deletePersona = exports.putPersona = exports.postPersona = exports.getPersona = exports.getPersonas = void 0;
 const Models = __importStar(require("./Models"));
 const Funcs = __importStar(require("./Functions"));
 //Class: Persona
@@ -140,7 +140,62 @@ const deletePersona = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 exports.deletePersona = deletePersona;
 //Class: Gobernadores
 const getGobernadores = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const gobernadrores = yield Models.gobernador.findAll();
-    res.json({ gobernadrores });
+    const gobernadores = yield Models.gobernador.findAll();
+    res.json({ gobernadores });
 });
 exports.getGobernadores = getGobernadores;
+//Class: Viviendas
+const getViviendas = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const viviendas = yield Models.vivienda.findAll();
+    res.json({ viviendas });
+});
+exports.getViviendas = getViviendas;
+const getVivienda = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const vivienda = yield Models.vivienda.findByPk(id);
+    vivienda ? res.status(201).json({
+        msg: "Apartment found",
+        data: vivienda
+    }) : res.status(404).json({
+        errors: [{
+                message: "No existe vivienda con ID: " + id,
+                extensions: {
+                    code: "Conts.getVivienda"
+                }
+            }]
+    });
+});
+exports.getVivienda = getVivienda;
+const postVivienda = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { body } = req;
+    try {
+        const vivienda = Models.vivienda.build(body);
+        yield vivienda.save();
+        res.json(vivienda);
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: "Error al crear Vivienda",
+        });
+    }
+});
+exports.postVivienda = postVivienda;
+const deleteVivienda = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const vivienda = yield Models.vivienda.findByPk(id);
+    try {
+        vivienda ? vivienda.destroy().then(() => {
+            res.json({
+                msg: "Apartment deleted",
+                id: id
+            });
+        }) : res.status(404).json({
+            msg: "No existe vivienda con ID: " + id
+        });
+    }
+    catch (error) {
+        console.log(error);
+    }
+});
+exports.deleteVivienda = deleteVivienda;

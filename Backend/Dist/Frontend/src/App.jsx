@@ -3,37 +3,29 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const react_1 = require("react");
-const react_svg_1 = __importDefault(require("./assets/react.svg"));
-const vite_svg_1 = __importDefault(require("/vite.svg"));
-require("./App.css");
-const api_1 = require("./api");
+const react_router_dom_1 = require("react-router-dom");
+const personas_1 = __importDefault(require("./pages/personas"));
+const detallePersona_1 = __importDefault(require("./pages/detallePersona"));
 function App() {
-    const [count, setCount] = (0, react_1.useState)(0);
-    (0, react_1.useEffect)(() => {
-        (0, api_1.api)().then((data) => console.log(data));
-    }, []);
     return (<>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={vite_svg_1.default} className="logo" alt="Vite logo"/>
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={react_svg_1.default} className="logo react" alt="React logo"/>
-        </a>
+      <div className="bg-white">
+        <react_router_dom_1.BrowserRouter>
+          <header className="bg-blue-600 text-white py-4 shadow-md">
+            <h1 className="text-center text-2xl font-bold">
+              Gestión de Personas
+            </h1>
+          </header>
+          <main className="flex-grow px-4 py-6">
+            <react_router_dom_1.Routes>
+              <react_router_dom_1.Route path="/personas" element={<personas_1.default />}/>
+              <react_router_dom_1.Route path="/persona/:id" element={<detallePersona_1.default />}/>
+            </react_router_dom_1.Routes>
+          </main>
+          <footer className="bg-gray-800 text-white py-4 text-center">
+            <p>&copy; {new Date().getFullYear()} Mi Aplicación</p>
+          </footer>
+        </react_router_dom_1.BrowserRouter>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>);
 }
 exports.default = App;

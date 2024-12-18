@@ -1,15 +1,30 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import PersonasPage from "./pages/personas";
 import DetallePersonaPage from "./pages/detallePersona";
+import ViviendasPage from "./pages/viviendas";
+import Header from "./components/Header";
 
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/personas" element={<PersonasPage />} />
-        <Route path="/personas/:id" element={<DetallePersonaPage />} />{" "}
-        {/* Ruta dinámica */}
-      </Routes>
+      <div className="bg-white min-h-screen">
+        {/* Header agregado al inicio */}
+        <Header />
+
+        {/* Contenido Principal */}
+        <main className="px-4 py-6">
+          <Routes>
+            <Route path="/personas" element={<PersonasPage />} />
+            <Route path="/persona/:id" element={<DetallePersonaPage />} />
+            <Route path="/viviendas" element={<ViviendasPage />} />
+          </Routes>
+        </main>
+
+        {/* Footer */}
+        <footer className="bg-gray-800 text-white py-4 text-center">
+          <p>ClassMatch CRUD</p>
+        </footer>
+      </div>
     </Router>
   );
 }

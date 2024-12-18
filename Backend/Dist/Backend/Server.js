@@ -53,18 +53,18 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 class Server {
     constructor() {
         this.apiPaths = {
-            path: "/api/"
+            path: "/api/",
         };
-        this.dbConnect();
         this.app = (0, express_1.default)();
         this.port = process.env.PORT || "5000";
+        this.dbConnect();
         this.middlewares();
         this.routes();
     }
-    ;
     middlewares() {
         this.app.use((0, cors_1.default)({
-            credentials: true
+            credentials: true,
+            origin: "http://localhost:5173", // Asegúrate de configurar el CORS para React
         }));
         this.app.use((0, cookie_parser_1.default)());
         this.app.use(express_1.default.json());
@@ -77,19 +77,18 @@ class Server {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield Connection_1.default.authenticate();
+                console.log("Database Online");
             }
             catch (error) {
-                console.log(error);
+                console.error("Error connecting to the database:", error);
             }
-            ;
         });
     }
-    ;
     listen() {
         this.app.listen(this.port, () => {
-            console.log("Server Running: " + this.port);
+            console.log(`Server running on port ${this.port}`);
         });
     }
 }
-;
-exports.default = Server;
+const server = new Server();
+server.listen();

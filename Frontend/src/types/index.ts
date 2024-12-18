@@ -8,3 +8,14 @@ export type Persona = {
   id_municipio_origen: number;
   id_vivienda_actual: number;
 };
+
+export type Vivienda = {
+  id: number;
+  direccion: string;
+  id_municipio: number;
+  capacidad: number;
+  niveles: number;
+  area: number;
+  categoria: string;
+  estrato: number;
+};

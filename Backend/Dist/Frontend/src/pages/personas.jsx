@@ -32,25 +32,32 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const Conts = __importStar(require("./Controllers"));
-const router = (0, express_1.Router)();
-//User Management
-router.get("/personas", Conts.getPersonas);
-router.get("/persona/:id", Conts.getPersona);
-router.post("/persona", Conts.postPersona);
-router.put("/persona/:id", Conts.putPersona);
-router.delete("/persona/:id", Conts.deletePersona);
-// Viviendas
-router.get("/viviendas", Conts.getViviendas);
-router.get("/vivienda/:id", Conts.getVivienda);
-router.post("/vivienda", Conts.postVivienda);
-// No se pueden modificar los datos de las viviendas
-// se elimina, se crea una nueva y se relaciona
-//router.put("/vivienda/:id", Conts.putVivienda);
-//
-router.delete("/vivienda/:id", Conts.deleteVivienda);
-//User Management
-router.get("/gobernadores", Conts.getGobernadores);
-exports.default = router;
+const react_1 = __importStar(require("react"));
+const axios_1 = __importDefault(require("axios"));
+const PersonasPage = () => {
+    const [personas, setPersonas] = (0, react_1.useState)([]);
+    (0, react_1.useEffect)(() => {
+        axios_1.default
+            .get("http://localhost:5000/api/personas")
+            .then((response) => {
+            setPersonas(response.data.personas);
+            console.log(response.data);
+        })
+            .catch((error) => {
+            console.error("Error fetching products:", error);
+        });
+    }, []);
+    return (<div className="wfull">
+      <h1>Personas</h1>
+      <ul className="text-black">
+        {personas.map((persona) => (<li key={persona.id}>
+            {persona.nombre}, {persona.sexo}
+          </li>))}
+      </ul>
+    </div>);
+};
+exports.default = PersonasPage;

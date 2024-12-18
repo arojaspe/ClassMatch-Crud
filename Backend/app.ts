@@ -1,21 +1,20 @@
 import express from "express";
 //import { Request, Response } from "express";
 import cors from "cors";
-import { persona } from "./Models";
 const app = express();
 
 app.use(cors({ origin: "http://localhost:5173" }));
 app.use(express.json());
 
-app.get("/api/personas", async (req, res) => {
-  try {
-    const personas = await persona.findAll();
-    res.json(personas);
-  } catch (error) {
-    console.error("Error al obtener personas:", error);
-    res.status(500).json({ message: "Error al obtener personas" });
-  }
-});
+// app.get("/api/personas", async (req, res) => {
+//   try {
+//     const personas = await persona.findAll();
+//     res.json(personas);
+//   } catch (error) {
+//     console.error("Error al obtener personas:", error);
+//     res.status(500).json({ message: "Error al obtener personas" });
+//   }
+// });
 
 // app.get(
 //   "/api/personas/:id",
