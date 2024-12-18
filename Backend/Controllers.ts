@@ -228,7 +228,105 @@ export const postGobernador = async (req: Request, res: Response) => {
 }
 
 //Class: Alcaldes
+export const getAlcaldes = async (req: Request, res: Response) => {
+    
+    const alcaldes = await Models.alcalde.findAll({
+        include: [
+            {
+                model: Models.municipio,
+                include : [
+                    {model: Models.departamento}
+                ],
+            },
+            {
+                model: Models.persona,
+                include: [
+                        {
+                            model: Models.vivienda,
+                            include : [
+                                {model: Models.municipio,
+                                    include: [ 
+                                        {model: Models.departamento}
+                                    ]
+                                },
+                            ]
+                        },
+                        {
+                            model: Models.municipio,
+                            include : [
+                                {model: Models.departamento}
+                            ],
+                        },
+                ]
+            },
+        ],
+    });
+    res.json({alcaldes});
+}
+export const getAlcalde = async (req: Request, res: Response) => {
+    
+    const {id} = req.params;
 
+    const alcalde = await Models.alcalde.findByPk(id, {
+        include: [
+            {
+                model: Models.municipio,
+                include : [
+                    {model: Models.departamento}
+                ],
+            },
+            {
+                model: Models.persona,
+                include: [
+                        {
+                            model: Models.vivienda,
+                            include : [
+                                {model: Models.municipio,
+                                    include: [ 
+                                        {model: Models.departamento}
+                                    ]
+                                },
+                            ]
+                        },
+                        {
+                            model: Models.municipio,
+                            include : [
+                                {model: Models.departamento}
+                            ],
+                        },
+                ]
+            },
+        ],
+    });
+
+    alcalde ? res.status(201).json(
+        {
+            msg: "Major found",
+            data: alcalde
+        }
+    ) : res.status(404).json({
+        errors: [{
+            message: "No existe alcalde con ID: " +id,
+            extensions: {
+                code: "Conts.getAlcalde"
+            }
+        }]
+    })
+}
+export const postAlcalde = async (req: Request, res: Response) => {
+    
+    const {body}= req;
+    try {
+        const alcalde = Models.alcalde.build(body);
+        await alcalde.save();
+        res.json(alcalde);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: "Error al crear Alcalde",
+        })
+    }
+}
 
 //Class: Viviendas
 export const getViviendas = async (req: Request, res: Response) => {

@@ -24,5 +24,10 @@ router.get("/gobernador/:id", Conts.getGobernador);
 // No se pueden borrar o editar
 router.post("/gobernador/", Conts.postGobernador);
 
+//Majors Managment
+router.get("/alcaldes", Conts.getAlcaldes);
+router.get("/alcalde/:id", Conts.getAlcalde);
+// No se pueden borrar o editar
+router.post("/alcalde/", Conts.postAlcalde);
 
 export default router;
