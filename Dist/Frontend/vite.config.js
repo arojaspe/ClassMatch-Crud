@@ -9,6 +9,7 @@ const vite_1 = require("vite");
 const plugin_react_swc_1 = __importDefault(require("@vitejs/plugin-react-swc"));
 // https://vite.dev/config/
 exports.default = (0, vite_1.defineConfig)({
+    base: "ClassMatch-Crud/tree/Deployment",
     plugins: [(0, plugin_react_swc_1.default)()],
     server: {
         host: "0.0.0.0",
