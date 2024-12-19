@@ -37,10 +37,31 @@ const DetallePersona: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+
+    // Validación para teléfono e ID de vivienda actual
+    if (name === "telefono" || name === "id_vivienda_actual") {
+      // Convertimos el valor a número
+      const parsedValue = parseInt(value, 10);
+
+      // Si el valor es menor que 0, no lo actualizamos
+      if (parsedValue < 0) {
+        setError("Los valores de teléfono e IDs no pueden ser negativos.");
+        return;
+      } else {
+        setError(null); // Limpiamos el error si el valor es válido
+      }
+
+      // Actualizamos el valor en el estado
+      setFormData({
+        ...formData,
+        [name]: parsedValue,
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
 
   const handleSave = () => {
@@ -143,7 +164,7 @@ const DetallePersona: React.FC = () => {
           <div>
             <label className="block text-gray-700">Teléfono:</label>
             <input
-              type="text"
+              type="number"
               name="telefono"
               value={formData.telefono}
               onChange={handleChange}
@@ -157,7 +178,7 @@ const DetallePersona: React.FC = () => {
               ID de Vivienda Actual:
             </label>
             <input
-              type="text"
+              type="number"
               name="id_vivienda_actual"
               value={formData.id_vivienda_actual}
               onChange={handleChange}

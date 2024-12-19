@@ -11,9 +11,9 @@ const PersonasPage: React.FC = () => {
     numero_doc: "",
     sexo: "",
     fecha_nac: "",
-    telefono: "",
-    id_vivienda_actual: "",
-    id_municipio_origen: "",
+    telefono: 0,
+    id_vivienda_actual: 0,
+    id_municipio_origen: 0,
   });
   const [error, setError] = useState<string | null>(null);
 
@@ -29,7 +29,7 @@ const PersonasPage: React.FC = () => {
       });
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -40,6 +40,7 @@ const PersonasPage: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Validar campos
     if (
       !formData.nombre ||
       !formData.tipo_doc ||
@@ -53,8 +54,25 @@ const PersonasPage: React.FC = () => {
       return;
     }
 
+    // Validar valores negativos para teléfono e ID
+    if (formData.telefono < 0 || formData.id_vivienda_actual < 0 || formData.id_municipio_origen < 0) {
+      setError("Los valores de teléfono e IDs no pueden ser negativos.");
+      return;
+    }
+
+    // Preparar los datos en el formato correcto para el backend
+    const personaData = {
+      tipo_doc: formData.tipo_doc,
+      nombre: formData.nombre,
+      fecha_nac: formData.fecha_nac, // La fecha ya debería estar en formato adecuado
+      sexo: formData.sexo,
+      telefono: formData.telefono,
+      id_vivienda_actual: formData.id_vivienda_actual,
+      id_municipio_origen: formData.id_municipio_origen,
+    };
+
     axios
-      .post("http://localhost:5000/api/persona", formData)
+      .post("http://localhost:5000/api/persona", personaData)
       .then((response) => {
         setPersonas([...personas, response.data.persona]); // Añadimos la nueva persona al estado
         setFormData({
@@ -63,11 +81,11 @@ const PersonasPage: React.FC = () => {
           numero_doc: "",
           sexo: "",
           fecha_nac: "",
-          telefono: "",
-          id_vivienda_actual: "",
-          id_municipio_origen: "",
-        });
-        setError(null);
+          telefono: 0,
+          id_vivienda_actual: 0,
+          id_municipio_origen: 0,
+        }); // Limpiar el formulario
+        setError(null); // Limpiar errores
         window.location.reload();
       })
       .catch((error) => {
@@ -117,27 +135,35 @@ const PersonasPage: React.FC = () => {
             </div>
             <div>
               <label className="block text-gray-700">Tipo de Documento:</label>
-              <input
-                type="text"
+              <select
                 name="tipo_doc"
                 value={formData.tipo_doc}
                 onChange={handleChange}
                 className="w-full p-2 border border-gray-300 rounded-md"
                 required
-              />
+              >
+                <option value="">Seleccionar</option>
+                <option value="Cédula">Cédula</option>
+                <option value="DNI">DNI</option>
+                <option value="Pasaporte">Pasaporte</option>
+              </select>
             </div>
 
             <div>
               <label className="block text-gray-700">Sexo:</label>
-              <input
-                type="text"
+              <select
                 name="sexo"
                 value={formData.sexo}
                 onChange={handleChange}
                 className="w-full p-2 border border-gray-300 rounded-md"
                 required
-              />
+              >
+                <option value="">Seleccionar</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Femenino">Femenino</option>
+              </select>
             </div>
+
             <div>
               <label className="block text-gray-700">
                 Fecha de Nacimiento:
@@ -154,12 +180,13 @@ const PersonasPage: React.FC = () => {
             <div>
               <label className="block text-gray-700">Teléfono:</label>
               <input
-                type="text"
+                type="number"
                 name="telefono"
                 value={formData.telefono}
                 onChange={handleChange}
                 className="w-full p-2 border border-gray-300 rounded-md"
                 required
+                min="0"
               />
             </div>
             <div>
@@ -167,12 +194,13 @@ const PersonasPage: React.FC = () => {
                 ID de Vivienda Actual:
               </label>
               <input
-                type="text"
+                type="number"
                 name="id_vivienda_actual"
                 value={formData.id_vivienda_actual}
                 onChange={handleChange}
                 className="w-full p-2 border border-gray-300 rounded-md"
                 required
+                min="0"
               />
             </div>
             <div>
@@ -180,12 +208,13 @@ const PersonasPage: React.FC = () => {
                 ID de Municipio de Origen:
               </label>
               <input
-                type="text"
+                type="number"
                 name="id_municipio_origen"
                 value={formData.id_municipio_origen}
                 onChange={handleChange}
                 className="w-full p-2 border border-gray-300 rounded-md"
                 required
+                min="0"
               />
             </div>
 
