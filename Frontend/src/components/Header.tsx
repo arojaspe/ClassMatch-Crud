@@ -35,6 +35,24 @@ export default function Header() {
             >
               Gobernadores
             </Link>
+            <Link
+              to="/departamentos"
+              className="px-4 py-2 bg-white text-teal-700 rounded-md hover:bg-gray-100 transition"
+            >
+              Departamentos
+            </Link>
+            <Link
+              to="/municipios"
+              className="px-4 py-2 bg-white text-teal-700 rounded-md hover:bg-gray-100 transition"
+            >
+              Municipios
+            </Link>
+            <Link
+              to="/alcaldes"
+              className="px-4 py-2 bg-white text-teal-700 rounded-md hover:bg-gray-100 transition"
+            >
+              Alcaldes
+            </Link>
           </nav>
         </div>
       </div>
