@@ -1,29 +1,29 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Vivienda } from "../types";
+import { Gobernador } from "../types";
 
-const DetalleViviendaPage = () => {
+const DetalleGobernadorPage = () => {
   const { id } = useParams();
-  const [vivienda, setVivienda] = useState<Vivienda>();
+  const [gobernador, setGobernador] = useState<Gobernador>();
 
   useEffect(() => {
-    const fetchVivienda = async () => {
+    const fetchGobernador = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/vivienda/${id}`
+          `http://localhost:5000/api/gobernador/${id}`
         );
         const data = await response.json();
-        setVivienda(data.data); // Asegurarse de acceder al campo "data"
+        setGobernador(data.data); // Asegurarse de acceder al campo "data"
         console.log(data.data); // Verifica los datos en la consola
       } catch (error) {
-        console.error("Error fetching vivienda:", error);
+        console.error("Error fetching gobernador:", error);
       }
     };
 
-    fetchVivienda();
+    fetchGobernador();
   }, [id]);
 
-  if (!vivienda)
+  if (!gobernador)
     return <div className="text-center text-lg mt-8">Cargando...</div>;
 
   return (
@@ -31,44 +31,34 @@ const DetalleViviendaPage = () => {
       <div className="flex flex-col items-center justify-center w-3/4">
         <div className="bg-neutral-100 shadow-lg rounded-lg p-6 w-full">
           <h1 className="text-2xl font-bold text-gray-800 mb-4 text-center">
-            Detalle de Vivienda
+            Detalle de Gobernador
           </h1>
           <div className="space-y-4">
             <div>
-              <span className="font-semibold text-gray-600">Dirección:</span>{" "}
-              <span className="text-gray-800">{vivienda.direccion}</span>
+              <span className="font-semibold text-gray-600">Nombre:</span>{" "}
+              <span className="text-gray-800">{gobernador.persona.nombre}</span>
             </div>
             <div>
               <span className="font-semibold text-gray-600">
-                Tipo de vivienda:
+                Fecha de inicio de labores:
               </span>{" "}
-              <span className="text-gray-800">{vivienda.categoria}</span>
+              <span className="text-gray-800">{gobernador.fecha_registro}</span>
             </div>
             <div>
               <span className="font-semibold text-gray-600">
-                Capacidad (personas):
+                Gobernador de:
               </span>{" "}
-              <span className="text-gray-800">{vivienda.capacidad}</span>
-            </div>
-            <div>
-              <span className="font-semibold text-gray-600">Área:</span>{" "}
-              <span className="text-gray-800">{vivienda.area}</span>
-            </div>
-            <div>
-              <span className="font-semibold text-gray-600">Estrato:</span>{" "}
-              <span className="text-gray-800">{vivienda.estrato}</span>
+              <span className="text-gray-800">
+                {gobernador.persona.municipio.departamento.nombre}
+              </span>
             </div>
             <div>
               <span className="font-semibold text-gray-600">
-                ID de municipio:
+                Ciudad de residencia:
               </span>{" "}
-              <span className="text-gray-800">{vivienda.id_municipio}</span>
-            </div>
-            <div>
-              <span className="font-semibold text-gray-600">
-                Cantidad de pisos:
-              </span>{" "}
-              <span className="text-gray-800">{vivienda.niveles}</span>
+              <span className="text-gray-800">
+                {gobernador.persona.municipio.nombre}
+              </span>
             </div>
           </div>
           <button
@@ -83,4 +73,4 @@ const DetalleViviendaPage = () => {
   );
 };
 
-export default DetalleViviendaPage;
+export default DetalleGobernadorPage;
