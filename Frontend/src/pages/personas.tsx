@@ -29,7 +29,9 @@ const PersonasPage: React.FC = () => {
       });
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -55,7 +57,11 @@ const PersonasPage: React.FC = () => {
     }
 
     // Validar valores negativos para teléfono e ID
-    if (formData.telefono < 0 || formData.id_vivienda_actual < 0 || formData.id_municipio_origen < 0) {
+    if (
+      formData.telefono < 0 ||
+      formData.id_vivienda_actual < 0 ||
+      formData.id_municipio_origen < 0
+    ) {
       setError("Los valores de teléfono e IDs no pueden ser negativos.");
       return;
     }
@@ -230,7 +236,7 @@ const PersonasPage: React.FC = () => {
         {/* Tabla de Personas */}
         <table className="min-w-full bg-white table-auto border-collapse border border-gray-300">
           <thead>
-            <tr className="bg-indigo-600 text-white">
+            <tr className="bg-teal-800 text-white">
               <th className="px-4 py-2 text-left">ID</th>
               <th className="px-4 py-2 text-left">Nombre</th>
               <th className="px-4 py-2 text-left">Tipo de Documento</th>
@@ -250,7 +256,7 @@ const PersonasPage: React.FC = () => {
                 <td className="px-4 py-2 text-center">
                   <Link
                     to={`/persona/${persona.id}`}
-                    className="bg-blue-500 text-white py-1 px-4 rounded-md hover:bg-blue-600 transition"
+                    className="bg-teal-600 text-white py-1 px-4 rounded-md hover:bg-blue-600 transition"
                   >
                     Ver Detalles
                   </Link>

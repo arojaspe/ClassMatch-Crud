@@ -2,37 +2,33 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 
-const DetallePersona: React.FC = () => {
-  const { id } = useParams<{ id: string }>(); // Obtener el ID de la persona
+const DetalleDepartamentoPage: React.FC = () => {
+  const { id } = useParams<{ id: string }>(); // Obtener el ID de la departamento
   const navigate = useNavigate(); // Para redirigir después de guardar/cancelar
-  const [persona, setPersona] = useState<any>(null); // Datos de la persona
+  const [departamento, setDepartamento] = useState<any>(null); // Datos de la departamento
   const [isEditing, setIsEditing] = useState(false); // Para determinar si estamos en modo edición
   const [formData, setFormData] = useState<any>({
     nombre: "",
-    tipo_doc: "",
-    numero_doc: "",
-    sexo: "",
-    fecha_nac: "",
-    telefono: "",
-    id_vivienda_actual: "",
-    id_municipio_origen: "",
+    pais: "",
   });
   const [error, setError] = useState<string | null>(null);
 
-  // Cargar los datos de la persona
+  // Cargar los datos de la departamento
   useEffect(() => {
-    const fetchPersona = async () => {
+    const fetchDepartamento = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/persona/${id}`);
+        const response = await fetch(
+          `http://localhost:5000/api/departamento/${id}`
+        );
         const data = await response.json();
-        setPersona(data.data); // Asegurarse de acceder al campo "data"
-        setFormData(data.data); // Inicializar el formulario con los datos de la persona
+        setDepartamento(data.data); // Asegurarse de acceder al campo "data"
+        setFormData(data.data); // Inicializar el formulario con los datos de la departamento
         console.log(data.data); // Verifica los datos en la consola
       } catch (error) {
-        console.error("Error fetching persona:", error);
+        console.error("Error fetching departamento:", error);
       }
     };
-    fetchPersona();
+    fetchDepartamento();
   }, [id]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,30 +62,26 @@ const DetallePersona: React.FC = () => {
 
   const handleSave = () => {
     // Validación antes de guardar
-    if (
-      !formData.nombre ||
-      !formData.telefono ||
-      !formData.id_vivienda_actual
-    ) {
+    if (!formData.nombre || !formData.pais || !formData.id_vivienda_actual) {
       setError("Por favor, complete todos los campos.");
       return;
     }
 
     // Enviar los cambios al backend
     axios
-      .put(`http://localhost:5000/api/persona/${id}`, formData)
+      .put(`http://localhost:5000/api/departamento/${id}`, formData)
       .then((response) => {
-        setPersona(response.data.persona);
+        setDepartamento(response.data.departamento);
         setIsEditing(false); // Cambiar a modo de solo lectura
         setError(null); // Limpiar errores
       })
       .catch((error) => {
-        console.error("Error saving persona:", error);
+        console.error("Error saving departamento:", error);
       });
   };
 
   const handleCancel = () => {
-    setFormData(persona); // Restauramos los datos originales
+    setFormData(departamento); // Restauramos los datos originales
     setIsEditing(false); // Salimos del modo edición
     setError(null); // Limpiar errores
   };
@@ -98,7 +90,7 @@ const DetallePersona: React.FC = () => {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-5xl">
         <h1 className="text-3xl font-semibold text-center mb-6">
-          Detalle de Persona
+          Detalle de Departamento
         </h1>
 
         {error && <div className="text-red-500 text-center mb-4">{error}</div>}
@@ -112,7 +104,7 @@ const DetallePersona: React.FC = () => {
         </button>
 
         <form className="space-y-4">
-          {/* Mostrar los datos de la persona en campos de solo lectura */}
+          {/* Mostrar los datos de la departamento en campos de solo lectura */}
           <div>
             <label className="block text-gray-700">Nombre:</label>
             <input
@@ -126,75 +118,11 @@ const DetallePersona: React.FC = () => {
           </div>
 
           <div>
-            <label className="block text-gray-700">Tipo de Documento:</label>
+            <label className="block text-gray-700">Pais:</label>
             <input
               type="text"
-              name="tipo_doc"
-              value={formData.tipo_doc}
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded-md"
-              disabled={true}
-            />
-          </div>
-
-          <div>
-            <label className="block text-gray-700">Sexo:</label>
-            <input
-              type="text"
-              name="sexo"
-              value={formData.sexo}
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded-md"
-              disabled={true}
-            />
-          </div>
-
-          <div>
-            <label className="block text-gray-700">Fecha de Nacimiento:</label>
-            <input
-              type="date"
-              name="fecha_nac"
-              value={formData.fecha_nac}
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded-md"
-              disabled={true}
-            />
-          </div>
-
-          <div>
-            <label className="block text-gray-700">Teléfono:</label>
-            <input
-              type="number"
-              name="telefono"
-              value={formData.telefono}
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded-md"
-              disabled={!isEditing}
-            />
-          </div>
-
-          <div>
-            <label className="block text-gray-700">
-              ID de Vivienda Actual:
-            </label>
-            <input
-              type="number"
-              name="id_vivienda_actual"
-              value={formData.id_vivienda_actual}
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded-md"
-              disabled={!isEditing}
-            />
-          </div>
-
-          <div>
-            <label className="block text-gray-700">
-              ID de Municipio de Origen:
-            </label>
-            <input
-              type="text"
-              name="id_municipio_origen"
-              value={formData.id_municipio_origen}
+              name="pais"
+              value={formData.pais}
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded-md"
               disabled={true}
@@ -236,4 +164,4 @@ const DetallePersona: React.FC = () => {
   );
 };
 
-export default DetallePersona;
+export default DetalleDepartamentoPage;

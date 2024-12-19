@@ -8,6 +8,10 @@ import GobernadoresPage from "./pages/gobernadores";
 import DetalleGobernadorPage from "./pages/detalleGobernador";
 import AlcaldesPage from "./pages/alcaldes";
 import DetalleAlcaldePage from "./pages/detalleAlcalde";
+import DetalleDepartamentoPage from "./pages/detalleDepartamento";
+import MunicipiosPage from "./pages/municipios";
+import DetalleMunicipioPage from "./pages/detalleMunicipio";
+import DepartamentosPage from "./pages/departamentos";
 
 function App() {
   return (
@@ -27,6 +31,13 @@ function App() {
             <Route path="/gobernador/:id" element={<DetalleGobernadorPage />} />
             <Route path="/alcaldes" element={<AlcaldesPage />} />
             <Route path="/alcalde/:id" element={<DetalleAlcaldePage />} />
+            <Route path="/departamentos" element={<DepartamentosPage />} />
+            <Route
+              path="/departamento/:id"
+              element={<DetalleDepartamentoPage />}
+            />
+            <Route path="/municipios" element={<MunicipiosPage />} />
+            <Route path="/municipio/:id" element={<DetalleMunicipioPage />} />
           </Routes>
         </main>
 

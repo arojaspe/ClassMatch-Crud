@@ -1,29 +1,29 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Gobernador } from "../types";
+import { Vivienda } from "../types";
 
-const DetalleGobernadorPage = () => {
+const DetalleViviendaPage = () => {
   const { id } = useParams();
-  const [gobernador, setGobernador] = useState<Gobernador>();
+  const [vivienda, setVivienda] = useState<Vivienda>();
 
   useEffect(() => {
-    const fetchGobernador = async () => {
+    const fetchVivienda = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/gobernador/${id}`
+          `http://localhost:5000/api/vivienda/${id}`
         );
         const data = await response.json();
-        setGobernador(data.data); // Asegurarse de acceder al campo "data"
+        setVivienda(data.data); // Asegurarse de acceder al campo "data"
         console.log(data.data); // Verifica los datos en la consola
       } catch (error) {
-        console.error("Error fetching gobernador:", error);
+        console.error("Error fetching vivienda:", error);
       }
     };
 
-    fetchGobernador();
+    fetchVivienda();
   }, [id]);
 
-  if (!gobernador)
+  if (!vivienda)
     return <div className="text-center text-lg mt-8">Cargando...</div>;
 
   return (
@@ -31,50 +31,44 @@ const DetalleGobernadorPage = () => {
       <div className="flex flex-col items-center justify-center w-3/4">
         <div className="bg-neutral-100 shadow-lg rounded-lg p-6 w-full">
           <h1 className="text-2xl font-bold text-gray-800 mb-4 text-center">
-            Detalle de Gobernador
+            Detalle de Vivienda
           </h1>
           <div className="space-y-4">
             <div>
-              <span className="font-semibold text-gray-600">Nombre:</span>{" "}
-              <span className="text-gray-800">{gobernador.persona.nombre}</span>
+              <span className="font-semibold text-gray-600">Dirección:</span>{" "}
+              <span className="text-gray-800">{vivienda.direccion}</span>
             </div>
             <div>
               <span className="font-semibold text-gray-600">
-                Fecha de inicio de labores:
+                Tipo de vivienda:
               </span>{" "}
-              <span className="text-gray-800">{gobernador.fecha_registro}</span>
+              <span className="text-gray-800">{vivienda.categoria}</span>
             </div>
             <div>
               <span className="font-semibold text-gray-600">
-                Es gobernador de:
+                Capacidad (personas):
               </span>{" "}
-              <span className="text-gray-800">
-                {gobernador.persona.municipio.departamento.nombre}
-              </span>
+              <span className="text-gray-800">{vivienda.capacidad}</span>
             </div>
             <div>
-              <span className="font-semibold text-gray-600">Vive en:</span>{" "}
-              <span className="text-gray-800">
-                {gobernador.persona.municipio.nombre}
-              </span>
+              <span className="font-semibold text-gray-600">Área:</span>{" "}
+              <span className="text-gray-800">{vivienda.area}</span>
+            </div>
+            <div>
+              <span className="font-semibold text-gray-600">Estrato:</span>{" "}
+              <span className="text-gray-800">{vivienda.estrato}</span>
             </div>
             <div>
               <span className="font-semibold text-gray-600">
-                Fecha de nacimiento:
+                ID de municipio:
               </span>{" "}
-              <span className="text-gray-800">
-                {gobernador.persona.fecha_nac}
-              </span>
+              <span className="text-gray-800">{vivienda.id_municipio}</span>
             </div>
             <div>
-              <span className="font-semibold text-gray-600">Sexo:</span>{" "}
-              <span className="text-gray-800">{gobernador.persona.sexo}</span>
-            </div>
-            <div>
-              <span className="font-semibold text-gray-600">Teléfono:</span>{" "}
-              <span className="text-gray-800">
-                {gobernador.persona.telefono}
-              </span>
+              <span className="font-semibold text-gray-600">
+                Cantidad de pisos:
+              </span>{" "}
+              <span className="text-gray-800">{vivienda.niveles}</span>
             </div>
           </div>
           <button
@@ -89,4 +83,4 @@ const DetalleGobernadorPage = () => {
   );
 };
 
-export default DetalleGobernadorPage;
+export default DetalleViviendaPage;
