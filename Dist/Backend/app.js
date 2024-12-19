@@ -7,7 +7,7 @@ const express_1 = __importDefault(require("express"));
 //import { Request, Response } from "express";
 const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
-app.use((0, cors_1.default)({ origin: "http://localhost:5173" }));
+app.use((0, cors_1.default)({ origin: "https://classmatch-crud.onrender.com" }));
 app.use(express_1.default.json());
 // app.get("/api/personas", async (req, res) => {
 //   try {

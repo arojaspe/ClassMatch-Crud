@@ -23,7 +23,7 @@ class Server {
     this.app.use(
       cors({
         credentials: true,
-        origin: "http://localhost:5173", // Asegúrate de configurar el CORS para React
+        origin: "https://classmatch-crud.onrender.com", // Asegúrate de configurar el CORS para React
       })
     );
     this.app.use(cookieParser());

@@ -3,7 +3,7 @@ import express from "express";
 import cors from "cors";
 const app = express();
 
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(cors({ origin: "https://classmatch-crud.onrender.com" }));
 app.use(express.json());
 
 // app.get("/api/personas", async (req, res) => {
