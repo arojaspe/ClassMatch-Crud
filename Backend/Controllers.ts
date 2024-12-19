@@ -386,6 +386,44 @@ export const postVivienda = async (req: Request, res: Response) => {
         })
     }
 }
+export const putVivienda = async (req: Request, res: Response) => {
+    const bod= req.body
+    const {id} = req.params
+
+    try {
+        let result= await Funcs.updateVivienda(req, bod.capacidad, bod.estrato)
+        console.log(bod)
+
+        if (result instanceof TypeError=== false) {
+            res.status(200).send({
+                data: {
+                    msg: "Succesfully updated vivienda:"+id
+                }
+            })
+        } else {
+            res.status(404).json({
+                errors: [{
+                    data: result,
+                    message: "Could not update vivienda:"+id+" it was not found",
+                    extensions: {
+                        code: "Funcs.putVivienda"
+                    }
+                }]
+            })
+        }        
+    } catch (error) {
+        res.status(401).json({
+            errors: [{
+                data: error,
+                message: "Could not update vivienda: "+id,
+                extensions: {
+                    code: "Funcs.putVivienda"
+                }
+            }]
+        })
+    }
+    
+}
 export const deleteVivienda = async (req: Request, res: Response) => {
     
     const {id}= req.params;
@@ -398,6 +436,287 @@ export const deleteVivienda = async (req: Request, res: Response) => {
             })
         })  : res.status(404).json({
             msg: "No existe vivienda con ID: "+ id
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+//Class: Posesiones
+export const getPosesiones = async (req: Request, res: Response) => {
+    
+    const posesiones= await Models.posesion.findAll({
+        include: [
+            {model: Models.persona},
+            {model: Models.vivienda},
+        ],
+    });
+    res.json({posesiones});
+}
+export const getPosesion = async (req: Request, res: Response) => {
+    
+    const {id} = req.params;
+
+    const posesion= await Models.posesion.findByPk(id, {
+        include: [
+            {model: Models.persona},
+            {model: Models.vivienda},
+        ]
+    });
+
+    posesion ? res.status(201).json(
+        {
+            msg: "Posesion not found",
+            data: posesion
+        }
+    ) : res.status(404).json({
+        errors: [{
+            message: "No existe posesion con ID: " +id,
+            extensions: {
+                code: "Conts.getPosesion"
+            }
+        }]
+    })
+}
+export const postPosesion = async (req: Request, res: Response) => {
+    
+    const {body}= req;
+    try {
+        const posesion= Models.posesion.build(body);
+        await posesion.save();
+        res.json(posesion);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: "Error al crear Posesion",
+        })
+    }
+}
+export const putPosesion = async (req: Request, res: Response) => {
+    const bod= req.body
+    const {id} = req.params
+
+    try {
+        let result= await Funcs.updatePosesion(req, bod.id_persona)
+        console.log(bod)
+
+        if (result instanceof TypeError=== false) {
+            res.status(200).send({
+                data: {
+                    msg: "Succesfully updated posesion:"+id
+                }
+            })
+        } else {
+            res.status(404).json({
+                errors: [{
+                    data: result,
+                    message: "Could not update posesion:"+id+" it was not found",
+                    extensions: {
+                        code: "Funcs.putPosesion"
+                    }
+                }]
+            })
+        }        
+    } catch (error) {
+        res.status(401).json({
+            errors: [{
+                data: error,
+                message: "Could not update posesion: "+id,
+                extensions: {
+                    code: "Funcs.putPosesion"
+                }
+            }]
+        })
+    }
+    
+}
+
+//Class: Departamento
+export const getDepartamentos = async (req: Request, res: Response) => {
+    
+    const departamento= await Models.departamento.findAll();
+    res.json({departamento});
+}
+export const getDepartamento = async (req: Request, res: Response) => {
+    
+    const {id} = req.params;
+
+    const departamento= await Models.departamento.findByPk(id);
+
+    departamento ? res.status(201).json(
+        {
+            msg: "Departamento not found",
+            data: departamento
+        }
+    ) : res.status(404).json({
+        errors: [{
+            message: "No existe departamento con ID: " +id,
+            extensions: {
+                code: "Conts.getDepartamento"
+            }
+        }]
+    })
+}
+export const postDepartamento = async (req: Request, res: Response) => {
+    
+    const {body}= req;
+    try {
+        const departamento= Models.departamento.build(body);
+        await departamento.save();
+        res.json(departamento);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: "Error al crear Departamento",
+        })
+    }
+}
+export const putDepartamento = async (req: Request, res: Response) => {
+    const bod= req.body
+    const {id} = req.params
+
+    try {
+        let result= await Funcs.updateDepartamento(req, bod.nombre)
+        console.log(bod)
+
+        if (result instanceof TypeError=== false) {
+            res.status(200).send({
+                data: {
+                    msg: "Succesfully updated departmamento:"+id
+                }
+            })
+        } else {
+            res.status(404).json({
+                errors: [{
+                    data: result,
+                    message: "Could not update departamento:"+id+" it was not found",
+                    extensions: {
+                        code: "Funcs.putDepartamento"
+                    }
+                }]
+            })
+        }        
+    } catch (error) {
+        res.status(401).json({
+            errors: [{
+                data: error,
+                message: "Could not update departamento: "+id,
+                extensions: {
+                    code: "Funcs.putDepartamento"
+                }
+            }]
+        })
+    }
+    
+}
+export const deleteDepartamento = async (req: Request, res: Response) => {
+    
+    const {id}= req.params;
+    const departamento = await Models.departamento.findByPk(id);
+    try {
+        departamento ? departamento.destroy().then(() => {
+            res.json({
+                msg: "Departamento borrado",
+                id: id
+            })
+        })  : res.status(404).json({
+            msg: "No existe departamento con ID: "+ id
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+//Class: Municipio
+export const getMunicipios = async (req: Request, res: Response) => {
+    
+    const municipio= await Models.municipio.findAll();
+    res.json({municipio});
+}
+export const getMunicipio = async (req: Request, res: Response) => {
+    
+    const {id} = req.params;
+
+    const municipio= await Models.municipio.findByPk(id);
+
+    municipio ? res.status(201).json(
+        {
+            msg: "Municipio not found",
+            data: municipio
+        }
+    ) : res.status(404).json({
+        errors: [{
+            message: "No existe municipio con ID: " +id,
+            extensions: {
+                code: "Conts.getMunicipio"
+            }
+        }]
+    })
+}
+export const postMunicipio = async (req: Request, res: Response) => {
+    
+    const {body}= req;
+    try {
+        const municipio= Models.municipio.build(body);
+        await municipio.save();
+        res.json(municipio);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: "Error al crear Municipio",
+        })
+    }
+}
+export const putMunicipio = async (req: Request, res: Response) => {
+    const bod= req.body
+    const {id} = req.params
+
+    try {
+        let result= await Funcs.updateMunicipio(req, bod.nombre)
+        console.log(bod)
+
+        if (result instanceof TypeError=== false) {
+            res.status(200).send({
+                data: {
+                    msg: "Succesfully updated Municipio:"+id
+                }
+            })
+        } else {
+            res.status(404).json({
+                errors: [{
+                    data: result,
+                    message: "Could not update municipio:"+id+" it was not found",
+                    extensions: {
+                        code: "Funcs.putMunicipio"
+                    }
+                }]
+            })
+        }        
+    } catch (error) {
+        res.status(401).json({
+            errors: [{
+                data: error,
+                message: "Could not update Municipio: "+id,
+                extensions: {
+                    code: "Funcs.putMunicipio"
+                }
+            }]
+        })
+    }
+    
+}
+export const deleteMunicipio = async (req: Request, res: Response) => {
+    
+    const {id}= req.params;
+    const municipio = await Models.municipio.findByPk(id);
+    try {
+        municipio ? municipio.destroy().then(() => {
+            res.json({
+                msg: "Municipio borrado",
+                id: id
+            })
+        })  : res.status(404).json({
+            msg: "No existe Municipio con ID: "+ id
         })
     } catch (error) {
         console.log(error)

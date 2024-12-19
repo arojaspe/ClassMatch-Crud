@@ -1,6 +1,5 @@
-import { Request, Response } from "express";
+import {Request} from "express";
 import * as Models from "./Models";
-import { ErrorOptions } from "sequelize/types/errors/base-error";
 
 //Class: Persona
 export function createPersona(tipo_doc:string, nombre:string, fecha_nac: Date, sexo: string, telefono: number, id_vivienda_actual: number, id_municipio_origen: number) {
@@ -38,3 +37,58 @@ export async function updatePersona(req: Request, nombre?: string, telefono?:str
 }
 
 //Class: Vivienda
+export async function updateVivienda(req: Request, capacidad?: string, estrato?:string) {
+    try {
+        const {id} = req.params;
+        let vivienda= await Models.vivienda.findByPk(id)
+        if (!vivienda) {throw new TypeError("Vivienda not found")}
+
+        vivienda.set({
+            capacidad: capacidad??  vivienda.getDataValue("capacidad"),
+            estrato: estrato?? vivienda.getDataValue("estrato"),
+        }).save()
+    } catch (error) {
+        return(error)
+    }
+}
+
+//Class: Posesion
+export async function updatePosesion(req: Request, id_persona:string) {
+    try {
+        const {id} = req.params;
+        let posesion= await Models.posesion.findByPk(id)
+        if (!posesion) {throw new TypeError("Posesion not found")}
+        posesion.set({
+            id_persona: id_persona}).save()
+    } catch (error) {
+        return(error)
+    }
+}
+
+//Class: Departamento
+export async function updateDepartamento(req: Request, nombre:string) {
+    try {
+        const {id} = req.params;
+        let departamento= await Models.departamento.findByPk(id)
+        if (!departamento) {throw new TypeError("Departamento not found")}
+        departamento.set({
+            nombre: nombre}).save()
+    } catch (error) {
+        return(error)
+    }
+}
+
+//Class: Municipio
+export async function updateMunicipio(req: Request, nombre?:string, id_departamento?:string) {
+    try {
+        const {id} = req.params;
+        let municipio= await Models.municipio.findByPk(id)
+        if (!municipio) {throw new TypeError("Municipio not found")}
+        municipio.set({
+            nombre: nombre?? municipio.getDataValue('nombre'),
+            id_departamento: id_departamento?? municipio.getDataValue('id_departamento')
+            }).save()
+    } catch (error) {
+        return(error)
+    }
+}
