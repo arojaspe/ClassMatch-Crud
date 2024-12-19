@@ -17,6 +17,8 @@
     "express": "^4.21.2",
     "mysql2": "^3.11.5",
     "sequelize": "^6.37.5",
+    "tsc": "^2.0.4",
+    "typescript": "^5.7.2",
     "uuid": "^11.0.3"
   },
   "devDependencies": {
