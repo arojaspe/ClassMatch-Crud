@@ -15,23 +15,13 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -42,8 +32,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createPersona = createPersona;
-exports.updatePersona = updatePersona;
+exports.updateMunicipio = exports.updateDepartamento = exports.updatePosesion = exports.updateVivienda = exports.updatePersona = exports.createPersona = void 0;
 const Models = __importStar(require("./Models"));
 //Class: Persona
 function createPersona(tipo_doc, nombre, fecha_nac, sexo, telefono, id_vivienda_actual, id_municipio_origen) {
@@ -65,6 +54,7 @@ function createPersona(tipo_doc, nombre, fecha_nac, sexo, telefono, id_vivienda_
         throw new Error(error);
     }
 }
+exports.createPersona = createPersona;
 function updatePersona(req, nombre, telefono, id_vivienda_actual) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -84,4 +74,82 @@ function updatePersona(req, nombre, telefono, id_vivienda_actual) {
         }
     });
 }
+exports.updatePersona = updatePersona;
 //Class: Vivienda
+function updateVivienda(req, capacidad, estrato) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const { id } = req.params;
+            let vivienda = yield Models.vivienda.findByPk(id);
+            if (!vivienda) {
+                throw new TypeError("Vivienda not found");
+            }
+            vivienda.set({
+                capacidad: capacidad !== null && capacidad !== void 0 ? capacidad : vivienda.getDataValue("capacidad"),
+                estrato: estrato !== null && estrato !== void 0 ? estrato : vivienda.getDataValue("estrato"),
+            }).save();
+        }
+        catch (error) {
+            return (error);
+        }
+    });
+}
+exports.updateVivienda = updateVivienda;
+//Class: Posesion
+function updatePosesion(req, id_persona) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const { id } = req.params;
+            let posesion = yield Models.posesion.findByPk(id);
+            if (!posesion) {
+                throw new TypeError("Posesion not found");
+            }
+            posesion.set({
+                id_persona: id_persona
+            }).save();
+        }
+        catch (error) {
+            return (error);
+        }
+    });
+}
+exports.updatePosesion = updatePosesion;
+//Class: Departamento
+function updateDepartamento(req, nombre) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const { id } = req.params;
+            let departamento = yield Models.departamento.findByPk(id);
+            if (!departamento) {
+                throw new TypeError("Departamento not found");
+            }
+            departamento.set({
+                nombre: nombre
+            }).save();
+        }
+        catch (error) {
+            return (error);
+        }
+    });
+}
+exports.updateDepartamento = updateDepartamento;
+//Class: Municipio
+function updateMunicipio(req, nombre, id_departamento) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const { id } = req.params;
+            let municipio = yield Models.municipio.findByPk(id);
+            if (!municipio) {
+                throw new TypeError("Municipio not found");
+            }
+            municipio.set({
+                nombre: nombre !== null && nombre !== void 0 ? nombre : municipio.getDataValue('nombre'),
+                id_departamento: id_departamento !== null && id_departamento !== void 0 ? id_departamento : municipio.getDataValue('id_departamento')
+            }).save();
+        }
+        catch (error) {
+            return (error);
+        }
+    });
+}
+exports.updateMunicipio = updateMunicipio;

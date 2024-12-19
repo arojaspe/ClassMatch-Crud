@@ -40,37 +40,31 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
 const axios_1 = __importDefault(require("axios"));
 const react_router_dom_1 = require("react-router-dom");
-const DetallePersona = () => {
-    const { id } = (0, react_router_dom_1.useParams)(); // Obtener el ID de la persona
+const DetalleMunicipioPage = () => {
+    const { id } = (0, react_router_dom_1.useParams)(); // Obtener el ID de la municipio
     const navigate = (0, react_router_dom_1.useNavigate)(); // Para redirigir después de guardar/cancelar
-    const [persona, setPersona] = (0, react_1.useState)(null); // Datos de la persona
+    const [municipio, setMunicipio] = (0, react_1.useState)(null); // Datos de la municipio
     const [isEditing, setIsEditing] = (0, react_1.useState)(false); // Para determinar si estamos en modo edición
     const [formData, setFormData] = (0, react_1.useState)({
         nombre: "",
-        tipo_doc: "",
-        numero_doc: "",
-        sexo: "",
-        fecha_nac: "",
-        telefono: "",
-        id_vivienda_actual: "",
-        id_municipio_origen: "",
+        id_departamento: "",
     });
     const [error, setError] = (0, react_1.useState)(null);
-    // Cargar los datos de la persona
+    // Cargar los datos de la municipio
     (0, react_1.useEffect)(() => {
-        const fetchPersona = () => __awaiter(void 0, void 0, void 0, function* () {
+        const fetchMunicipio = () => __awaiter(void 0, void 0, void 0, function* () {
             try {
-                const response = yield fetch(`http://localhost:5000/api/persona/${id}`);
+                const response = yield fetch(`http://localhost:5000/api/municipio/${id}`);
                 const data = yield response.json();
-                setPersona(data.data); // Asegurarse de acceder al campo "data"
-                setFormData(data.data); // Inicializar el formulario con los datos de la persona
+                setMunicipio(data.data); // Asegurarse de acceder al campo "data"
+                setFormData(data.data); // Inicializar el formulario con los datos de la municipio
                 console.log(data.data); // Verifica los datos en la consola
             }
             catch (error) {
-                console.error("Error fetching persona:", error);
+                console.error("Error fetching municipio:", error);
             }
         });
-        fetchPersona();
+        fetchMunicipio();
     }, [id]);
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -95,33 +89,32 @@ const DetallePersona = () => {
     };
     const handleSave = () => {
         // Validación antes de guardar
-        if (!formData.nombre ||
-            !formData.telefono ||
-            !formData.id_vivienda_actual) {
+        if (!formData.nombre || !formData.id_departamento) {
             setError("Por favor, complete todos los campos.");
             return;
         }
         // Enviar los cambios al backend
         axios_1.default
-            .put(`http://localhost:5000/api/persona/${id}`, formData)
+            .put(`http://localhost:5000/api/municipio/${id}`, formData)
             .then((response) => {
-            setPersona(response.data.persona);
+            setMunicipio(response.data.municipio); // Actualizar los datos de la municipio
+            console.log(response.data);
             setIsEditing(false); // Cambiar a modo de solo lectura
             setError(null); // Limpiar errores
         })
             .catch((error) => {
-            console.error("Error saving persona:", error);
+            console.error("Error saving municipio:", error);
         });
     };
     const handleCancel = () => {
-        setFormData(persona); // Restauramos los datos originales
+        setFormData(municipio); // Restauramos los datos originales
         setIsEditing(false); // Salimos del modo edición
         setError(null); // Limpiar errores
     };
     return (<div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-5xl">
         <h1 className="text-3xl font-semibold text-center mb-6">
-          Detalle de Persona
+          Detalle de Municipio
         </h1>
 
         {error && <div className="text-red-500 text-center mb-4">{error}</div>}
@@ -132,7 +125,7 @@ const DetallePersona = () => {
         </button>
 
         <form className="space-y-4">
-          {/* Mostrar los datos de la persona en campos de solo lectura */}
+          {/* Mostrar los datos de la municipio en campos de solo lectura */}
           <div>
             <label className="block text-gray-700">Nombre:</label>
             <input type="text" name="nombre" value={formData.nombre} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded-md" disabled={!isEditing} // Deshabilitamos si no estamos en modo edición
@@ -140,37 +133,8 @@ const DetallePersona = () => {
           </div>
 
           <div>
-            <label className="block text-gray-700">Tipo de Documento:</label>
-            <input type="text" name="tipo_doc" value={formData.tipo_doc} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded-md" disabled={true}/>
-          </div>
-
-          <div>
-            <label className="block text-gray-700">Sexo:</label>
-            <input type="text" name="sexo" value={formData.sexo} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded-md" disabled={true}/>
-          </div>
-
-          <div>
-            <label className="block text-gray-700">Fecha de Nacimiento:</label>
-            <input type="date" name="fecha_nac" value={formData.fecha_nac} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded-md" disabled={true}/>
-          </div>
-
-          <div>
-            <label className="block text-gray-700">Teléfono:</label>
-            <input type="number" name="telefono" value={formData.telefono} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded-md" disabled={!isEditing}/>
-          </div>
-
-          <div>
-            <label className="block text-gray-700">
-              ID de Vivienda Actual:
-            </label>
-            <input type="number" name="id_vivienda_actual" value={formData.id_vivienda_actual} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded-md" disabled={!isEditing}/>
-          </div>
-
-          <div>
-            <label className="block text-gray-700">
-              ID de Municipio de Origen:
-            </label>
-            <input type="text" name="id_municipio_origen" value={formData.id_municipio_origen} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded-md" disabled={true}/>
+            <label className="block text-gray-700">Id Municipio:</label>
+            <input type="text" name="id_departamento" value={formData.id_departamento} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded-md" disabled={!isEditing}/>
           </div>
 
           {/* Mostrar los botones dependiendo del estado de edición */}
@@ -191,4 +155,4 @@ const DetallePersona = () => {
       </div>
     </div>);
 };
-exports.default = DetallePersona;
+exports.default = DetalleMunicipioPage;

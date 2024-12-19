@@ -181,3 +181,25 @@ exports.alcalde = Connection_1.default.define("posesion", {
     freezeTableName: true,
     tableName: 'alcalde'
 });
+// Relations
+exports.vivienda.hasMany(exports.persona, { foreignKey: 'id_vivienda_actual' });
+exports.vivienda.belongsTo(exports.municipio, { foreignKey: 'id_municipio' });
+exports.persona.belongsTo(exports.vivienda, { foreignKey: 'id_vivienda_actual' });
+exports.persona.belongsTo(exports.municipio, { foreignKey: 'id_municipio_origen' });
+exports.persona.hasOne(exports.gobernador, { foreignKey: 'id_persona' });
+exports.persona.hasOne(exports.alcalde, { foreignKey: 'id_persona' });
+//persona.hasOne(CDF, {foreignKey: 'id_persona'});
+exports.persona.hasMany(exports.posesion, { foreignKey: 'id_posesion' });
+exports.gobernador.belongsTo(exports.persona, { foreignKey: 'id_persona' });
+exports.gobernador.belongsTo(exports.departamento, { foreignKey: 'id_departamento' });
+exports.alcalde.belongsTo(exports.persona, { foreignKey: 'id_persona' });
+exports.alcalde.belongsTo(exports.municipio, { foreignKey: 'id_municipio' });
+exports.municipio.hasMany(exports.persona, { foreignKey: 'id_municipio_origen' });
+exports.municipio.hasMany(exports.vivienda, { foreignKey: 'id_municipio' });
+exports.municipio.hasOne(exports.alcalde, { foreignKey: 'id_municipio' });
+exports.municipio.belongsTo(exports.departamento, { foreignKey: 'id_departamento' });
+exports.departamento.hasMany(exports.municipio, { foreignKey: 'id_departamento' });
+exports.departamento.hasOne(exports.gobernador, { foreignKey: 'id_departamento' });
+exports.posesion.belongsTo(exports.persona, { foreignKey: 'id_persona' });
+exports.posesion.belongsTo(exports.persona, { foreignKey: 'id_vivienda' });
+//CDF.belongsTo(persona, {foreignKey: 'id_persona'})
