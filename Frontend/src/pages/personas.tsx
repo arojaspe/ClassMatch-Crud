@@ -25,6 +25,7 @@ const PersonasPage: React.FC = () => {
       })
       .catch((error) => {
         console.error("Error fetching personas:", error);
+        window.location.reload();
       });
   }, []);
 
@@ -42,7 +43,6 @@ const PersonasPage: React.FC = () => {
     if (
       !formData.nombre ||
       !formData.tipo_doc ||
-      !formData.numero_doc ||
       !formData.sexo ||
       !formData.fecha_nac ||
       !formData.telefono ||
@@ -54,7 +54,7 @@ const PersonasPage: React.FC = () => {
     }
 
     axios
-      .post("http://localhost:5000/api/personas", formData)
+      .post("http://localhost:5000/api/persona", formData)
       .then((response) => {
         setPersonas([...personas, response.data.persona]); // Añadimos la nueva persona al estado
         setFormData({
@@ -68,6 +68,7 @@ const PersonasPage: React.FC = () => {
           id_municipio_origen: "",
         });
         setError(null);
+        window.location.reload();
       })
       .catch((error) => {
         console.error("Error adding persona:", error);
@@ -94,9 +95,13 @@ const PersonasPage: React.FC = () => {
 
         {/* Formulario para añadir nueva persona */}
         <div className="bg-gray-200 p-4 mb-6 rounded-lg w-full">
-          <h2 className="text-2xl font-semibold mb-4 text-center">Añadir Persona</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-center">
+            Añadir Persona
+          </h2>
 
-          {error && <div className="text-red-500 text-center mb-4">{error}</div>}
+          {error && (
+            <div className="text-red-500 text-center mb-4">{error}</div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
@@ -121,17 +126,7 @@ const PersonasPage: React.FC = () => {
                 required
               />
             </div>
-            <div>
-              <label className="block text-gray-700">Número de Documento:</label>
-              <input
-                type="text"
-                name="numero_doc"
-                value={formData.numero_doc}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded-md"
-                required
-              />
-            </div>
+
             <div>
               <label className="block text-gray-700">Sexo:</label>
               <input
@@ -144,7 +139,9 @@ const PersonasPage: React.FC = () => {
               />
             </div>
             <div>
-              <label className="block text-gray-700">Fecha de Nacimiento:</label>
+              <label className="block text-gray-700">
+                Fecha de Nacimiento:
+              </label>
               <input
                 type="date"
                 name="fecha_nac"
@@ -166,7 +163,9 @@ const PersonasPage: React.FC = () => {
               />
             </div>
             <div>
-              <label className="block text-gray-700">ID de Vivienda Actual:</label>
+              <label className="block text-gray-700">
+                ID de Vivienda Actual:
+              </label>
               <input
                 type="text"
                 name="id_vivienda_actual"
@@ -177,7 +176,9 @@ const PersonasPage: React.FC = () => {
               />
             </div>
             <div>
-              <label className="block text-gray-700">ID de Municipio de Origen:</label>
+              <label className="block text-gray-700">
+                ID de Municipio de Origen:
+              </label>
               <input
                 type="text"
                 name="id_municipio_origen"
@@ -189,7 +190,7 @@ const PersonasPage: React.FC = () => {
             </div>
 
             <button
-              type="submit"
+              type="submit" // Cambiamos a "submit" para que funcione correctamente con el formulario
               className="mt-4 bg-green-500 hover:bg-green-600 text-white py-2 px-6 rounded-md w-full"
             >
               Añadir
@@ -212,7 +213,7 @@ const PersonasPage: React.FC = () => {
           <tbody>
             {personas.map((persona) => (
               <tr key={persona.id} className="border-t hover:bg-gray-100">
-                <td className="px-4 py-2">{persona.id}</td>
+                <td className="px-4 py-2">{persona.id || "sin ID"}</td>
                 <td className="px-4 py-2">{persona.nombre}</td>
                 <td className="px-4 py-2">{persona.tipo_doc}</td>
                 <td className="px-4 py-2">{persona.sexo}</td>
@@ -225,7 +226,7 @@ const PersonasPage: React.FC = () => {
                     Ver Detalles
                   </Link>
                   <button
-                    onClick={() => handleEliminar(persona.id)} // Llama a la función de eliminación
+                    onClick={() => handleEliminar(persona.id)}
                     className="bg-red-500 text-white py-1 px-4 rounded-md hover:bg-red-600 transition ml-4"
                   >
                     Eliminar
