@@ -185,6 +185,8 @@ persona.belongsTo(vivienda, {foreignKey: 'id_vivienda_actual'});
 persona.belongsTo(municipio, {foreignKey: 'id_municipio_origen'});
 persona.hasOne(gobernador, {foreignKey: 'id_persona'});
 persona.hasOne(alcalde, {foreignKey: 'id_persona'});
+//persona.hasOne(CDF, {foreignKey: 'id_persona'});
+persona.hasMany(posesion, {foreignKey: 'id_posesion'})
 
 gobernador.belongsTo(persona, {foreignKey: 'id_persona'});
 gobernador.belongsTo(departamento, {foreignKey: 'id_departamento'});
@@ -200,4 +202,7 @@ municipio.belongsTo(departamento, {foreignKey: 'id_departamento'});
 departamento.hasMany(municipio, {foreignKey: 'id_departamento'});
 departamento.hasOne(gobernador, {foreignKey: 'id_departamento'});
 
+posesion.belongsTo(persona, {foreignKey: 'id_persona'})
+posesion.belongsTo(persona, {foreignKey: 'id_vivienda'})
 
+//CDF.belongsTo(persona, {foreignKey: 'id_persona'})
