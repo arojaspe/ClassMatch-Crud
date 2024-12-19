@@ -6,6 +6,8 @@ import Header from "./components/Header";
 import DetalleViviendaPage from "./pages/detalleVivienda";
 import GobernadoresPage from "./pages/gobernadores";
 import DetalleGobernadorPage from "./pages/detalleGobernador";
+import AlcaldesPage from "./pages/alcaldes";
+import DetalleAlcaldePage from "./pages/detalleAlcalde";
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
             <Route path="/vivienda/:id" element={<DetalleViviendaPage />} />
             <Route path="/gobernadores" element={<GobernadoresPage />} />
             <Route path="/gobernador/:id" element={<DetalleGobernadorPage />} />
+            <Route path="/alcaldes" element={<AlcaldesPage />} />
+            <Route path="/alcalde/:id" element={<DetalleAlcaldePage />} />
           </Routes>
         </main>
 
