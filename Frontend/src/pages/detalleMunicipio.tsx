@@ -22,7 +22,7 @@ const DetalleMunicipioPage: React.FC = () => {
     const fetchMunicipio = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/municipio/${id}`
+          `https://classmatch-crud-backend.onrender.com/api/municipio/${id}`
         );
         const data = await response.json();
         setMunicipio(data.data); // Asegurarse de acceder al campo "data"
@@ -73,7 +73,7 @@ const DetalleMunicipioPage: React.FC = () => {
 
     // Enviar los cambios al backend
     axios
-      .put(`http://localhost:5000/api/municipio/${id}`, formData)
+      .put(`https://classmatch-crud-backend.onrender.com/api/municipio/${id}`, formData)
       .then((response) => {
         setMunicipio(response.data.municipio); // Actualizar los datos de la municipio
         console.log(response.data);

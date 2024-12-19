@@ -18,7 +18,7 @@ const GobernadoresPage: React.FC = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/gobernadores")
+      .get("https://classmatch-crud-backend.onrender.com/api/gobernadores")
       .then((response) => {
         setGobernadores(response.data.gobernadores);
       })
@@ -60,7 +60,7 @@ const GobernadoresPage: React.FC = () => {
     };
 
     axios
-      .post("http://localhost:5000/api/gobernador", gobernadorData)
+      .post("https://classmatch-crud-backend.onrender.com/api/gobernador", gobernadorData)
       .then((response) => {
         setGobernadores([...gobernadores, response.data.gobernador]); // Añadimos la nueva gobernador al estado
         setFormData({
@@ -79,7 +79,7 @@ const GobernadoresPage: React.FC = () => {
   // Función para manejar la eliminación de una gobernador
   // const handleEliminar = (id: number) => {
   //   axios
-  //     .delete(`http://localhost:5000/api/gobernador/${id}`)
+  //     .delete(`https://classmatch-crud-backend.onrender.com/api/gobernador/${id}`)
   //     .then(() => {
   //       // Actualizamos el estado eliminando la gobernador del array
   //       setGobernadores(

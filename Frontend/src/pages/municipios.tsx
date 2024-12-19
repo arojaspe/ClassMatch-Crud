@@ -18,7 +18,7 @@ const MunicipiosPage: React.FC = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/municipios")
+      .get("https://classmatch-crud-backend.onrender.com/api/municipios")
       .then((response) => {
         setMunicipios(response.data.municipio);
         console.log(response.data.municipio);
@@ -55,7 +55,7 @@ const MunicipiosPage: React.FC = () => {
     };
 
     axios
-      .post(`http://localhost:5000/api/municipio/${formData.id}`, municipioData)
+      .post(`https://classmatch-crud-backend.onrender.com/api/municipio/${formData.id}`, municipioData)
       .then((response) => {
         setMunicipios([...municipios, response.data.municipio]); // Añadimos la nueva municipio al estado
         setFormData({
@@ -74,7 +74,7 @@ const MunicipiosPage: React.FC = () => {
   // Función para manejar la eliminación de una municipio
   const handleEliminar = (id: number) => {
     axios
-      .delete(`http://localhost:5000/api/municipio/${id}`)
+      .delete(`https://classmatch-crud-backend.onrender.com/api/municipio/${id}`)
       .then(() => {
         // Actualizamos el estado eliminando la municipio del array
         setMunicipios(municipios.filter((municipio) => municipio.id !== id));

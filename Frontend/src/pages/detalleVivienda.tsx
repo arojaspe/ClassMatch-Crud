@@ -27,7 +27,7 @@ const DetalleViviendaPage = () => {
   useEffect(() => {
     const fetchVivienda = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/vivienda/${id}`);
+        const response = await fetch(`https://classmatch-crud-backend.onrender.com/api/vivienda/${id}`);
         const data = await response.json();
         setVivienda(data.data);
         setFormData(data.data);
@@ -81,7 +81,7 @@ const DetalleViviendaPage = () => {
 
     // Enviar los cambios al backend
     axios
-      .put(`http://localhost:5000/api/vivienda/${id}`, formData)
+      .put(`https://classmatch-crud-backend.onrender.com/api/vivienda/${id}`, formData)
       .then((response) => {
         setVivienda(response.data.vivienda);
         setIsEditing(false);

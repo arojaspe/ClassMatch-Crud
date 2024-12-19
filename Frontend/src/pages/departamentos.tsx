@@ -18,7 +18,7 @@ const DepartamentosPage: React.FC = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/departamentos")
+      .get("https://classmatch-crud-backend.onrender.com/api/departamentos")
       .then((response) => {
         setDepartamentos(response.data.departamento);
         console.log(response.data.departamento);
@@ -56,7 +56,7 @@ const DepartamentosPage: React.FC = () => {
 
     axios
       .post(
-        `http://localhost:5000/api/departamento/${formData.id}`,
+        `https://classmatch-crud-backend.onrender.com/api/departamento/${formData.id}`,
         departamentoData
       )
       .then((response) => {
@@ -77,7 +77,7 @@ const DepartamentosPage: React.FC = () => {
   // Función para manejar la eliminación de una departamento
   const handleEliminar = (id: number) => {
     axios
-      .delete(`http://localhost:5000/api/departamento/${id}`)
+      .delete(`https://classmatch-crud-backend.onrender.com/api/departamento/${id}`)
       .then(() => {
         // Actualizamos el estado eliminando la departamento del array
         setDepartamentos(

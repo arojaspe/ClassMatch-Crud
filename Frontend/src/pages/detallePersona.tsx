@@ -27,7 +27,7 @@ const DetallePersona: React.FC = () => {
   useEffect(() => {
     const fetchPersona = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/persona/${id}`);
+        const response = await fetch(`https://classmatch-crud-backend.onrender.com/api/persona/${id}`);
         const data = await response.json();
         setPersona(data.data); // Asegurarse de acceder al campo "data"
         setFormData(data.data); // Inicializar el formulario con los datos de la persona
@@ -81,7 +81,7 @@ const DetallePersona: React.FC = () => {
 
     // Enviar los cambios al backend
     axios
-      .put(`http://localhost:5000/api/persona/${id}`, formData)
+      .put(`https://classmatch-crud-backend.onrender.com/api/persona/${id}`, formData)
       .then((response) => {
         setPersona(response.data.persona);
         setIsEditing(false); // Cambiar a modo de solo lectura

@@ -19,7 +19,7 @@ const DetalleGobernadorPage = () => {
     (0, react_1.useEffect)(() => {
         const fetchGobernador = () => __awaiter(void 0, void 0, void 0, function* () {
             try {
-                const response = yield fetch(`http://localhost:5000/api/gobernador/${id}`);
+                const response = yield fetch(`https://classmatch-backend.onrender.com//api/gobernador/${id}`);
                 const data = yield response.json();
                 setGobernador(data.data); // Asegurarse de acceder al campo "data"
                 console.log(data.data); // Verifica los datos en la consola

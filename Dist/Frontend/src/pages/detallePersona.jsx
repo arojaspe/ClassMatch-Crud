@@ -60,7 +60,7 @@ const DetallePersona = () => {
     (0, react_1.useEffect)(() => {
         const fetchPersona = () => __awaiter(void 0, void 0, void 0, function* () {
             try {
-                const response = yield fetch(`http://localhost:5000/api/persona/${id}`);
+                const response = yield fetch(`https://classmatch-backend.onrender.com//api/persona/${id}`);
                 const data = yield response.json();
                 setPersona(data.data); // Asegurarse de acceder al campo "data"
                 setFormData(data.data); // Inicializar el formulario con los datos de la persona
@@ -103,7 +103,7 @@ const DetallePersona = () => {
         }
         // Enviar los cambios al backend
         axios_1.default
-            .put(`http://localhost:5000/api/persona/${id}`, formData)
+            .put(`https://classmatch-backend.onrender.com//api/persona/${id}`, formData)
             .then((response) => {
             setPersona(response.data.persona);
             setIsEditing(false); // Cambiar a modo de solo lectura

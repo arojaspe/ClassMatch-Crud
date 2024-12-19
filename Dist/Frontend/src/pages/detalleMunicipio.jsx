@@ -54,7 +54,7 @@ const DetalleMunicipioPage = () => {
     (0, react_1.useEffect)(() => {
         const fetchMunicipio = () => __awaiter(void 0, void 0, void 0, function* () {
             try {
-                const response = yield fetch(`http://localhost:5000/api/municipio/${id}`);
+                const response = yield fetch(`https://classmatch-backend.onrender.com//api/municipio/${id}`);
                 const data = yield response.json();
                 setMunicipio(data.data); // Asegurarse de acceder al campo "data"
                 setFormData(data.data); // Inicializar el formulario con los datos de la municipio
@@ -95,7 +95,7 @@ const DetalleMunicipioPage = () => {
         }
         // Enviar los cambios al backend
         axios_1.default
-            .put(`http://localhost:5000/api/municipio/${id}`, formData)
+            .put(`https://classmatch-backend.onrender.com//api/municipio/${id}`, formData)
             .then((response) => {
             setMunicipio(response.data.municipio); // Actualizar los datos de la municipio
             console.log(response.data);

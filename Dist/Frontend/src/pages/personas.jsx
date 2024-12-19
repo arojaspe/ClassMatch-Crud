@@ -46,7 +46,7 @@ const PersonasPage = () => {
     const [error, setError] = (0, react_1.useState)(null);
     (0, react_1.useEffect)(() => {
         axios_1.default
-            .get("http://localhost:5000/api/personas")
+            .get("https://classmatch-backend.onrender.com//api/personas")
             .then((response) => {
             setPersonas(response.data.personas);
         })
@@ -90,7 +90,7 @@ const PersonasPage = () => {
             id_municipio_origen: formData.id_municipio_origen,
         };
         axios_1.default
-            .post("http://localhost:5000/api/persona", personaData)
+            .post("https://classmatch-backend.onrender.com//api/persona", personaData)
             .then((response) => {
             setPersonas([...personas, response.data.persona]); // Añadimos la nueva persona al estado
             setFormData({
@@ -113,7 +113,7 @@ const PersonasPage = () => {
     // Función para manejar la eliminación de una persona
     const handleEliminar = (id) => {
         axios_1.default
-            .delete(`http://localhost:5000/api/persona/${id}`)
+            .delete(`https://classmatch-backend.onrender.com//api/persona/${id}`)
             .then(() => {
             // Actualizamos el estado eliminando la persona del array
             setPersonas(personas.filter((persona) => persona.id !== id));

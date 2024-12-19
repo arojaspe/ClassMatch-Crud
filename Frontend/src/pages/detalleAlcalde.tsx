@@ -16,7 +16,7 @@ const DetalleAlcaldePage = () => {
     const fetchAlcalde = async () => {
       try {
         // Asegúrate de que la URL es correcta para obtener el alcalde usando `id_persona`
-        const response = await fetch(`http://localhost:5000/api/alcalde/${id}`);
+        const response = await fetch(`https://classmatch-crud-backend.onrender.com/api/alcalde/${id}`);
         
         if (!response.ok) {
           throw new Error("No se pudo cargar la información del alcalde.");

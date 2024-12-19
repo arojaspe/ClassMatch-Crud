@@ -36,7 +36,7 @@ const DetalleViviendaPage = () => {
     (0, react_1.useEffect)(() => {
         const fetchVivienda = () => __awaiter(void 0, void 0, void 0, function* () {
             try {
-                const response = yield fetch(`http://localhost:5000/api/vivienda/${id}`);
+                const response = yield fetch(`https://classmatch-backend.onrender.com//api/vivienda/${id}`);
                 const data = yield response.json();
                 setVivienda(data.data);
                 setFormData(data.data);
@@ -78,7 +78,7 @@ const DetalleViviendaPage = () => {
         }
         // Enviar los cambios al backend
         axios_1.default
-            .put(`http://localhost:5000/api/vivienda/${id}`, formData)
+            .put(`https://classmatch-backend.onrender.com//api/vivienda/${id}`, formData)
             .then((response) => {
             setVivienda(response.data.vivienda);
             setIsEditing(false);

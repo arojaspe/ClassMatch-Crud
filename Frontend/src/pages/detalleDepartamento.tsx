@@ -21,7 +21,7 @@ const DetalleDepartamentoPage: React.FC = () => {
     const fetchDepartamento = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/departamento/${id}`
+          `https://classmatch-crud-backend.onrender.com/api/departamento/${id}`
         );
         const data = await response.json();
         setDepartamento(data.data); // Asegurarse de acceder al campo "data"
@@ -72,7 +72,7 @@ const DetalleDepartamentoPage: React.FC = () => {
 
     // Enviar los cambios al backend
     axios
-      .put(`http://localhost:5000/api/departamento/${id}`, formData)
+      .put(`https://classmatch-crud-backend.onrender.com/api/departamento/${id}`, formData)
       .then((response) => {
         setDepartamento(response.data.departamento);
         setIsEditing(false); // Cambiar a modo de solo lectura

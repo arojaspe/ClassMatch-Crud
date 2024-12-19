@@ -41,7 +41,7 @@ const GobernadoresPage = () => {
     const [error, setError] = (0, react_1.useState)(null);
     (0, react_1.useEffect)(() => {
         axios_1.default
-            .get("http://localhost:5000/api/gobernadores")
+            .get("https://classmatch-backend.onrender.com//api/gobernadores")
             .then((response) => {
             setGobernadores(response.data.gobernadores);
         })
@@ -70,7 +70,7 @@ const GobernadoresPage = () => {
             fecha_registro: formData.fecha_registro, // La fecha ya debería estar en formato adecuado
         };
         axios_1.default
-            .post("http://localhost:5000/api/gobernador", gobernadorData)
+            .post("https://classmatch-backend.onrender.com//api/gobernador", gobernadorData)
             .then((response) => {
             setGobernadores([...gobernadores, response.data.gobernador]); // Añadimos la nueva gobernador al estado
             setFormData({
@@ -88,7 +88,7 @@ const GobernadoresPage = () => {
     // Función para manejar la eliminación de una gobernador
     // const handleEliminar = (id: number) => {
     //   axios
-    //     .delete(`http://localhost:5000/api/gobernador/${id}`)
+    //     .delete(`https://classmatch-backend.onrender.com//api/gobernador/${id}`)
     //     .then(() => {
     //       // Actualizamos el estado eliminando la gobernador del array
     //       setGobernadores(

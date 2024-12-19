@@ -13,5 +13,6 @@ export default defineConfig({
     host: "0.0.0.0",
     strictPort: true,
     port: 5173,
+    origin: "*"
     }
 })

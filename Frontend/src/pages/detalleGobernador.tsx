@@ -14,7 +14,7 @@ const DetalleGobernadorPage = () => {
     const fetchGobernador = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/gobernador/${id}`
+          `https://classmatch-crud-backend.onrender.com/api/gobernador/${id}`
         );
         const data = await response.json();
         setGobernador(data.data); // Asegurarse de acceder al campo "data"

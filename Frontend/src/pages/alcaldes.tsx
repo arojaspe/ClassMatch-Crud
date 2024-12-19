@@ -18,7 +18,7 @@ const AlcaldesPage: React.FC = () => {
   // Cargar los datos de los alcaldes
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/alcaldes")
+      .get("https://classmatch-crud-backend.onrender.com/api/alcaldes")
       .then((response) => {
         setAlcaldes(response.data.alcaldes);
       })
@@ -59,7 +59,7 @@ const AlcaldesPage: React.FC = () => {
     };
 
     axios
-      .post("http://localhost:5000/api/alcalde", alcaldeData)
+      .post("https://classmatch-crud-backend.onrender.com/api/alcalde", alcaldeData)
       .then((response) => {
         setAlcaldes([...alcaldes, response.data.alcalde]); // Añadimos el nuevo alcalde al estado
         setFormData({

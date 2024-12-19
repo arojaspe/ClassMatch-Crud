@@ -41,7 +41,7 @@ const MunicipiosPage = () => {
     const [error, setError] = (0, react_1.useState)(null);
     (0, react_1.useEffect)(() => {
         axios_1.default
-            .get("http://localhost:5000/api/municipios")
+            .get("https://classmatch-backend.onrender.com//api/municipios")
             .then((response) => {
             setMunicipios(response.data.municipio);
             console.log(response.data.municipio);
@@ -68,7 +68,7 @@ const MunicipiosPage = () => {
             id_departamento: formData.id_departamento, // La fecha ya debería estar en formato adecuado
         };
         axios_1.default
-            .post(`http://localhost:5000/api/municipio/${formData.id}`, municipioData)
+            .post(`https://classmatch-backend.onrender.com//api/municipio/${formData.id}`, municipioData)
             .then((response) => {
             setMunicipios([...municipios, response.data.municipio]); // Añadimos la nueva municipio al estado
             setFormData({
@@ -86,7 +86,7 @@ const MunicipiosPage = () => {
     // Función para manejar la eliminación de una municipio
     const handleEliminar = (id) => {
         axios_1.default
-            .delete(`http://localhost:5000/api/municipio/${id}`)
+            .delete(`https://classmatch-backend.onrender.com//api/municipio/${id}`)
             .then(() => {
             // Actualizamos el estado eliminando la municipio del array
             setMunicipios(municipios.filter((municipio) => municipio.id !== id));

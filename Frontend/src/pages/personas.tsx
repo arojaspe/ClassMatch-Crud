@@ -23,7 +23,7 @@ const PersonasPage: React.FC = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/personas")
+      .get("https://classmatch-crud-backend.onrender.com/api/personas")
       .then((response) => {
         setPersonas(response.data.personas);
       })
@@ -82,7 +82,7 @@ const PersonasPage: React.FC = () => {
     };
 
     axios
-      .post("http://localhost:5000/api/persona", personaData)
+      .post("https://classmatch-crud-backend.onrender.com/api/persona", personaData)
       .then((response) => {
         setPersonas([...personas, response.data.persona]); // Añadimos la nueva persona al estado
         setFormData({
@@ -106,7 +106,7 @@ const PersonasPage: React.FC = () => {
   // Función para manejar la eliminación de una persona
   const handleEliminar = (id: number) => {
     axios
-      .delete(`http://localhost:5000/api/persona/${id}`)
+      .delete(`https://classmatch-crud-backend.onrender.com/api/persona/${id}`)
       .then(() => {
         // Actualizamos el estado eliminando la persona del array
         setPersonas(personas.filter((persona) => persona.id !== id));

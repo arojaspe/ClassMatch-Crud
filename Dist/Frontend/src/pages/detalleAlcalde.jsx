@@ -22,7 +22,7 @@ const DetalleAlcaldePage = () => {
         const fetchAlcalde = () => __awaiter(void 0, void 0, void 0, function* () {
             try {
                 // Asegúrate de que la URL es correcta para obtener el alcalde usando `id_persona`
-                const response = yield fetch(`http://localhost:5000/api/alcalde/${id}`);
+                const response = yield fetch(`https://classmatch-backend.onrender.com//api/alcalde/${id}`);
                 if (!response.ok) {
                     throw new Error("No se pudo cargar la información del alcalde.");
                 }

@@ -46,7 +46,7 @@ const ViviendasPage = () => {
     // Cargar las viviendas desde el backend
     (0, react_1.useEffect)(() => {
         axios_1.default
-            .get("http://localhost:5000/api/viviendas")
+            .get("https://classmatch-backend.onrender.com//api/viviendas")
             .then((response) => {
             setViviendas(response.data.viviendas);
             console.log(response.data);
@@ -57,7 +57,7 @@ const ViviendasPage = () => {
     }, []);
     const handleEliminar = (id) => {
         axios_1.default
-            .delete(`http://localhost:5000/api/vivienda/${id}`)
+            .delete(`https://classmatch-backend.onrender.com//api/vivienda/${id}`)
             .then(() => {
             setViviendas(viviendas.filter((vivienda) => vivienda.id !== id));
         })
@@ -90,7 +90,7 @@ const ViviendasPage = () => {
         }
         // Enviar los datos al backend
         axios_1.default
-            .post("http://localhost:5000/api/vivienda", formData)
+            .post("https://classmatch-backend.onrender.com//api/vivienda", formData)
             .then((response) => {
             setViviendas([...viviendas, response.data.vivienda]); // Agregar la nueva vivienda a la lista
             setFormData({

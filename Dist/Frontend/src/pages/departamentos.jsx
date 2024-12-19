@@ -41,7 +41,7 @@ const DepartamentosPage = () => {
     const [error, setError] = (0, react_1.useState)(null);
     (0, react_1.useEffect)(() => {
         axios_1.default
-            .get("http://localhost:5000/api/departamentos")
+            .get("https://classmatch-backend.onrender.com//api/departamentos")
             .then((response) => {
             setDepartamentos(response.data.departamento);
             console.log(response.data.departamento);
@@ -68,7 +68,7 @@ const DepartamentosPage = () => {
             pais: formData.pais, // La fecha ya debería estar en formato adecuado
         };
         axios_1.default
-            .post(`http://localhost:5000/api/departamento/${formData.id}`, departamentoData)
+            .post(`https://classmatch-backend.onrender.com//api/departamento/${formData.id}`, departamentoData)
             .then((response) => {
             setDepartamentos([...departamentos, response.data.departamento]); // Añadimos la nueva departamento al estado
             setFormData({
@@ -86,7 +86,7 @@ const DepartamentosPage = () => {
     // Función para manejar la eliminación de una departamento
     const handleEliminar = (id) => {
         axios_1.default
-            .delete(`http://localhost:5000/api/departamento/${id}`)
+            .delete(`https://classmatch-backend.onrender.com//api/departamento/${id}`)
             .then(() => {
             // Actualizamos el estado eliminando la departamento del array
             setDepartamentos(departamentos.filter((departamento) => departamento.id !== id));

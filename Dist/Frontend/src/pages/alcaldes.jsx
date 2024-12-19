@@ -42,7 +42,7 @@ const AlcaldesPage = () => {
     // Cargar los datos de los alcaldes
     (0, react_1.useEffect)(() => {
         axios_1.default
-            .get("http://localhost:5000/api/alcaldes")
+            .get("https://classmatch-crud-backend.onrender.com/api/alcaldes")
             .then((response) => {
             setAlcaldes(response.data.alcaldes);
         })
@@ -74,7 +74,7 @@ const AlcaldesPage = () => {
             fecha_registro: formData.fecha_registro,
         };
         axios_1.default
-            .post("http://localhost:5000/api/alcalde", alcaldeData)
+            .post("https://classmatch-crud-backend.onrender.com/api/alcalde", alcaldeData)
             .then((response) => {
             setAlcaldes([...alcaldes, response.data.alcalde]); // Añadimos el nuevo alcalde al estado
             setFormData({
