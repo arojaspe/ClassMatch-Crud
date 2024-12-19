@@ -18,6 +18,20 @@ const GobernadoresPage: React.FC = () => {
       });
   }, []);
 
+  const handleEliminar = (id: number) => {
+    axios
+      .delete(`http://localhost:5000/api/gobernador/${id}`)
+      .then(() => {
+        // Actualizamos el estado eliminando al gobernador del array
+        setGobernadores(
+          gobernadores.filter((gobernador) => gobernador.id !== id)
+        );
+      })
+      .catch((error) => {
+        console.error("Error deleting gobernador:", error);
+      });
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-5xl">
@@ -42,16 +56,30 @@ const GobernadoresPage: React.FC = () => {
                 <td className="px-4 py-2">{gobernador.persona.id}</td>
                 <td className="px-4 py-2">{gobernador.persona.nombre}</td>
                 <td className="px-4 py-2">{gobernador.fecha_registro}</td>
-                <td className="px-4 py-2">{gobernador.municipio.nombre}</td>
+                <td className="px-4 py-2">
+                  {gobernador.persona.municipio.departamento.nombre}
+                </td>
+                <td className="px-4 py-2">
+                  {gobernador.persona.municipio.nombre}
+                </td>
+                <td className="px-4 py-2">
+                  {gobernador.persona.vivienda.direccion}
+                </td>
 
-                <td className="px-4 py-2 text-center">
+                <td className="px-4 flex py-2 text-center">
                   {/* Botón de detalle que usa Link para redirigir */}
                   <Link
                     to={`/gobernador/${gobernador.persona.id}`} // Redirige a la página de detalles
                     className="bg-teal-700 text-white py-1 px-4 rounded-md hover:bg-teal-800 transition"
                   >
-                    Ver Detalles
+                    Ver
                   </Link>
+                  <button
+                    onClick={() => handleEliminar(gobernador.persona.id)} // Llama a la función de eliminación
+                    className="bg-red-500 text-white py-1 px-4 rounded-md hover:bg-red-600 transition ml-4"
+                  >
+                    Eliminar
+                  </button>
                 </td>
               </tr>
             ))}

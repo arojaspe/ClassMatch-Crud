@@ -19,19 +19,19 @@ export default function Header() {
           <nav className="flex space-x-4">
             <Link
               to="/personas"
-              className="px-4 py-2 bg-white text-blue-600 rounded-md hover:bg-gray-100 transition"
+              className="px-4 py-2 bg-white text-teal-700 rounded-md hover:bg-gray-100 transition"
             >
               Personas
             </Link>
             <Link
               to="/viviendas"
-              className="px-4 py-2 bg-white text-blue-600 rounded-md hover:bg-gray-100 transition"
+              className="px-4 py-2 bg-white text-teal-700 rounded-md hover:bg-gray-100 transition"
             >
               Viviendas
             </Link>
             <Link
               to="/gobernadores"
-              className="px-4 py-2 bg-white text-blue-600 rounded-md hover:bg-gray-100 transition"
+              className="px-4 py-2 bg-white text-teal-700 rounded-md hover:bg-gray-100 transition"
             >
               Gobernadores
             </Link>
